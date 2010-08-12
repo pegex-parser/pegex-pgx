@@ -1,0 +1,43 @@
+# This is the Pegex grammar for Pegex grammars!
+#
+# It is written a slightly strict format so that it can be bootstrap
+# parsed by a non-Pegex parser.
+
+grammar:
+    <comment>*
+    <rule_definition>
+    [ <comment> | <rule_definition> ]*
+
+line: /<ANY>*<EOL>/
+
+blank_line: /<BLANK>*<EOL>/
+
+comment_line: /<HASH><line>/
+
+rule_definition: <rule_name> /<BLANK>*<COLON><WS>*/ <rule_body> <rule_ending>
+
+rule_name: /<ALPHA><WORD>*/
+
+rule_body:
+    <rule_reference> |
+    <regular_expression> |
+    <rule_group>
+
+rule_reference: <LANGLE> <rule_modifier>* <rule_name> <RANGLE>
+
+rule_modifier: /[<BANG><AMP>]/
+
+rule_group:
+    <bracketed_group> |
+    <rule_sequence> |
+    <rule_alternation>
+
+#
+# ...work in progress...
+#
+
+bracketed_group: /<LSQUARE><WS>*/ <rule_group> /<WS>*<RSQUARE>/
+
+regular_expression: /<SLASH>[^<SLASH><BLANKS><BREAK>]*<SLASH>/
+
+rule_ending: /<WS>*[<BREAK>|<SEMI>]/

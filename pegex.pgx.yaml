@@ -1,0 +1,47 @@
+---
+_FIRST_RULE: grammar
+bracketed_group:
+  +all:
+  - +re: \[\s*
+  - +rule: rule_group
+  - +re: \s*\]
+grammar:
+  +all:
+  - +rule: comment
+    <: '*'
+  - +rule: rule_definition
+  - +any:
+    - +rule: comment
+    - +rule: rule_definition
+    <: '*'
+regular_expression:
+  +re: \/[^\/\ \t\n]*\/
+rule_body:
+  +any:
+  - +rule: rule_reference
+  - +rule: regular_expression
+  - +rule: rule_group
+rule_definition:
+  +all:
+  - +rule: rule_name
+  - +re: '[\ \t]*:\s*'
+  - +rule: rule_body
+  - +rule: rule_ending
+rule_ending:
+  +re: \s*[\n|;]
+rule_group:
+  +any:
+  - +rule: bracketed_group
+  - +rule: rule_sequence
+  - +rule: rule_alternation
+rule_modifier:
+  +re: '[!&]'
+rule_name:
+  +re: '[a-zA-Z]\w*'
+rule_reference:
+  +all:
+  - +rule: LANGLE
+  - +rule: rule_modifier
+    <: '*'
+  - +rule: rule_name
+  - +rule: RANGLE
