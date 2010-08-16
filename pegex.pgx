@@ -4,40 +4,46 @@
 # parsed by a non-Pegex parser.
 
 grammar:
+    [
+        <comment>*
+        <rule_definition>
+    ]+
     <comment>*
-    <rule_definition>
-    [ <comment> | <rule_definition> ]*
 
-line: /<ANY>*<EOL>/
+comment: /(?:<blank_line>|<comment_line>)/
 
 blank_line: /<BLANK>*<EOL>/
 
 comment_line: /<HASH><line>/
 
-rule_definition: <rule_name> /<BLANK>*<COLON><WS>*/ <rule_body> <rule_ending>
+line: /<ANY>*<EOL>/
 
-rule_name: /<ALPHA><WORD>*/
+rule_definition: <rule_name> /<BLANK>*<COLON><WS>*/ <rule_set> <rule_ending>
 
-rule_body:
-    <rule_reference> |
+rule_name: /(<ALPHA><WORD>*)/
+
+rule_set:
     <regular_expression> |
-    <rule_group>
+    <rule_reference> |
+    <bracketed_group> |
+    <rule_group> |
 
-rule_reference: <LANGLE> <rule_modifier>* <rule_name> <RANGLE>
+regular_expression: /<SLASH>([^<SLASH>]*)<SLASH>/
+
+rule_reference: /<LANGLE>(<rule_modifier>?)(<rule_name>)<RANGLE>/
 
 rule_modifier: /[<BANG><AMP>]/
 
+bracketed_group: /<LSQUARE><WS>*/ <rule_group> /<WS>*<RSQUARE>/
+
 rule_group:
-    <bracketed_group> |
     <rule_sequence> |
     <rule_alternation>
 
-#
-# ...work in progress...
-#
+rule_sequence:
+    <rule_set> [ /<WS>*/ <rule_set>+ /<WS>*/ ]
 
-bracketed_group: /<LSQUARE><WS>*/ <rule_group> /<WS>*<RSQUARE>/
-
-regular_expression: /<SLASH>[^<SLASH><BLANKS><BREAK>]*<SLASH>/
+rule_alternation:
+    <rule_set> [ /<WS>*<PIPE><WS>*/ <rule_set> ]+
 
 rule_ending: /<WS>*[<BREAK>|<SEMI>]/
