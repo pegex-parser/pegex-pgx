@@ -17,7 +17,7 @@ grammar:
   - +rule: comment
     <: '*'
 regular_expression:
-  +re: \/([^\/]*)\/
+  +re: /([^/]*)/
 rule_alternation:
   +all:
   - +rule: rule_set
