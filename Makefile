@@ -1,6 +1,6 @@
-export PERL5LIB=$(HOME)/src/pegex-pm/lib
+export PERL5LIB=../pegex-pm/lib
 
-COMPILE_COMMAND = perl -MPegex::Compiler::Bootstrap -e 'print Pegex::Compiler::Bootstrap->new->parse_file(shift)->to_
+COMPILE_COMMAND = perl -MPegex::Compiler::Bootstrap -e 'print Pegex::Compiler::Bootstrap->new->compile_file(shift)->combinate->to_
 
 all: pegex.pgx.yaml pegex.pgx.json
 
