@@ -18,32 +18,41 @@ comment_line: /<HASH><line>/
 
 line: /<ANY>*<EOL>/
 
-rule_definition: <rule_name> /<BLANK>*<COLON><WS>*/ <rule_set> <rule_ending>
+rule_definition: <rule_name> /<BLANK>*<COLON><WS>*/ <rule_item> <rule_ending>
 
 rule_name: /(<ALPHA><WORD>*)/
 
-rule_set:
-    <regular_expression> |
-    <rule_reference> |
+# rule_body:
+#     <bracketed_group> |
+#     <unbracketed_group> |
+#     <regular_expression>
+
+rule_item:
     <bracketed_group> |
-    <rule_group> |
+    <regular_expression> |
+    <rule_reference>
 
 regular_expression: /<SLASH>([^<SLASH>]*)<SLASH>/
 
-rule_reference: /<LANGLE>(<rule_modifier>?)(<rule_name>)<RANGLE>/
+rule_reference:
+    /<LANGLE>(<rule_modifier>?)<rule_name><RANGLE>(<rule_quantifier>?)/
 
 rule_modifier: /[<BANG><AMP>]/
 
-bracketed_group: /<LSQUARE><WS>*/ <rule_group> /<WS>*<RSQUARE>/
+rule_quantifier: /[<STAR><PLUS><QMARK>]/
+
+bracketed_group: /<LSQUARE><WS>*/ <rule_group> /<WS>*<RSQUARE>/ <group_quantifier>?
+
+group_quantifier: /(<rule_quantifier>)/
 
 rule_group:
-    <rule_sequence> |
-    <rule_alternation>
+    <any_group> |
+    <all_group>
 
-rule_sequence:
-    <rule_set> [ /<WS>*/ <rule_set>+ /<WS>*/ ]
+all_group:
+    <rule_item> [ /<WS>*/ <rule_item>+ /<WS>*/ ]
 
-rule_alternation:
-    <rule_set> [ /<WS>*<PIPE><WS>*/ <rule_set> ]+
+any_group:
+    <rule_item> [ /<WS>*<PIPE><WS>*/ <rule_item> ]+
 
-rule_ending: /<WS>*[<BREAK>|<SEMI>]/
+rule_ending: /<WS>*(?:<BREAK>|<SEMI>|<EOS>)/

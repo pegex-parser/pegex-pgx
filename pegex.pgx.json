@@ -1,5 +1,44 @@
 {
    "_FIRST_RULE" : "grammar",
+   "all_group" : {
+      "+all" : [
+         {
+            "+rule" : "rule_item"
+         },
+         {
+            "+all" : [
+               {
+                  "+re" : "\\s*"
+               },
+               {
+                  "+rule" : "rule_item",
+                  "<" : "+"
+               },
+               {
+                  "+re" : "\\s*"
+               }
+            ]
+         }
+      ]
+   },
+   "any_group" : {
+      "+all" : [
+         {
+            "+rule" : "rule_item"
+         },
+         {
+            "+all" : [
+               {
+                  "+re" : "\\s*\\|\\s*"
+               },
+               {
+                  "+rule" : "rule_item"
+               }
+            ],
+            "<" : "+"
+         }
+      ]
+   },
    "bracketed_group" : {
       "+all" : [
          {
@@ -10,6 +49,10 @@
          },
          {
             "+re" : "\\s*\\]"
+         },
+         {
+            "+rule" : "group_quantifier",
+            "<" : "?"
          }
       ]
    },
@@ -36,26 +79,11 @@
          }
       ]
    },
+   "group_quantifier" : {
+      "+re" : "([\\*\\+\\?])"
+   },
    "regular_expression" : {
       "+re" : "/([^/]*)/"
-   },
-   "rule_alternation" : {
-      "+all" : [
-         {
-            "+rule" : "rule_set"
-         },
-         {
-            "+all" : [
-               {
-                  "+re" : "\\s*\\|\\s*"
-               },
-               {
-                  "+rule" : "rule_set"
-               }
-            ],
-            "<" : "+"
-         }
-      ]
    },
    "rule_definition" : {
       "+all" : [
@@ -66,7 +94,7 @@
             "+re" : "[\\ \\t]*:\\s*"
          },
          {
-            "+rule" : "rule_set"
+            "+rule" : "rule_item"
          },
          {
             "+rule" : "rule_ending"
@@ -74,15 +102,28 @@
       ]
    },
    "rule_ending" : {
-      "+re" : "\\s*[\\n|;]"
+      "+re" : "\\s*(?:\\n|;|\\z)"
    },
    "rule_group" : {
       "+any" : [
          {
-            "+rule" : "rule_sequence"
+            "+rule" : "any_group"
          },
          {
-            "+rule" : "rule_alternation"
+            "+rule" : "all_group"
+         }
+      ]
+   },
+   "rule_item" : {
+      "+any" : [
+         {
+            "+rule" : "bracketed_group"
+         },
+         {
+            "+rule" : "regular_expression"
+         },
+         {
+            "+rule" : "rule_reference"
          }
       ]
    },
@@ -90,43 +131,6 @@
       "+re" : "([a-zA-Z]\\w*)"
    },
    "rule_reference" : {
-      "+re" : "<([!&]?)(([a-zA-Z]\\w*))>"
-   },
-   "rule_sequence" : {
-      "+all" : [
-         {
-            "+rule" : "rule_set"
-         },
-         {
-            "+all" : [
-               {
-                  "+re" : "\\s*"
-               },
-               {
-                  "+rule" : "rule_set",
-                  "<" : "+"
-               },
-               {
-                  "+re" : "\\s*"
-               }
-            ]
-         }
-      ]
-   },
-   "rule_set" : {
-      "+any" : [
-         {
-            "+rule" : "regular_expression"
-         },
-         {
-            "+rule" : "rule_reference"
-         },
-         {
-            "+rule" : "bracketed_group"
-         },
-         {
-            "+rule" : "rule_group"
-         }
-      ]
+      "+re" : "<([!&]?)([a-zA-Z]\\w*)>([\\*\\+\\?]?)"
    }
 }
