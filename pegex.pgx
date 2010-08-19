@@ -18,7 +18,7 @@ comment_line: /<HASH><line>/
 
 line: /<ANY>*<EOL>/
 
-rule_definition: <rule_name> /<BLANK>*<COLON><WS>*/ <rule_item> <rule_ending>
+rule_definition: /<WS>*/ <rule_name> /<BLANK>*<COLON><WS>*/ <rule_item> <rule_ending>
 
 rule_name: /(<ALPHA><WORD>*)/
 
@@ -55,4 +55,4 @@ all_group:
 any_group:
     <rule_item> [ /<WS>*<PIPE><WS>*/ <rule_item> ]+
 
-rule_ending: /<WS>*(?:<BREAK>|<SEMI>|<EOS>)/
+rule_ending: /<WS>*?(?:<BREAK><WS>*|<SEMI><WS>*|<EOS>)/

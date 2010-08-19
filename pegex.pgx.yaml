@@ -39,12 +39,13 @@ regular_expression:
   +re: /([^/]*)/
 rule_definition:
   +all:
+  - +re: \s*
   - +rule: rule_name
   - +re: '[\ \t]*:\s*'
   - +rule: rule_item
   - +rule: rule_ending
 rule_ending:
-  +re: \s*(?:\n|;|\z)
+  +re: \s*?(?:\n\s*|;\s*|\z)
 rule_group:
   +any:
   - +rule: any_group

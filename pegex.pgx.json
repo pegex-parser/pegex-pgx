@@ -88,6 +88,9 @@
    "rule_definition" : {
       "+all" : [
          {
+            "+re" : "\\s*"
+         },
+         {
             "+rule" : "rule_name"
          },
          {
@@ -102,7 +105,7 @@
       ]
    },
    "rule_ending" : {
-      "+re" : "\\s*(?:\\n|;|\\z)"
+      "+re" : "\\s*?(?:\\n\\s*|;\\s*|\\z)"
    },
    "rule_group" : {
       "+any" : [
