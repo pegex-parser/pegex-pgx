@@ -6,8 +6,7 @@ all_group:
   - +all:
     - +re: \s*
     - +rule: rule_item
-      <: +
-    - +re: \s*
+    <: +
 any_group:
   +all:
   - +rule: rule_item
@@ -37,12 +36,22 @@ group_quantifier:
   +re: ([\*\+\?])
 regular_expression:
   +re: /([^/]*)/
+rule_body:
+  +any:
+  - +all:
+    - +re: (?=\[)
+    - +rule: bracketed_group
+  - +all:
+    - +re: (?=/)
+    - +rule: regular_expression
+  - +rule: rule_group
+  - +rule: rule_reference
 rule_definition:
   +all:
   - +re: \s*
   - +rule: rule_name
   - +re: '[\ \t]*:\s*'
-  - +rule: rule_item
+  - +rule: rule_body
   - +rule: rule_ending
 rule_ending:
   +re: \s*?(?:\n\s*|;\s*|\z)

@@ -11,13 +11,10 @@
                   "+re" : "\\s*"
                },
                {
-                  "+rule" : "rule_item",
-                  "<" : "+"
-               },
-               {
-                  "+re" : "\\s*"
+                  "+rule" : "rule_item"
                }
-            ]
+            ],
+            "<" : "+"
          }
       ]
    },
@@ -85,6 +82,36 @@
    "regular_expression" : {
       "+re" : "/([^/]*)/"
    },
+   "rule_body" : {
+      "+any" : [
+         {
+            "+all" : [
+               {
+                  "+re" : "(?=\\[)"
+               },
+               {
+                  "+rule" : "bracketed_group"
+               }
+            ]
+         },
+         {
+            "+all" : [
+               {
+                  "+re" : "(?=/)"
+               },
+               {
+                  "+rule" : "regular_expression"
+               }
+            ]
+         },
+         {
+            "+rule" : "rule_group"
+         },
+         {
+            "+rule" : "rule_reference"
+         }
+      ]
+   },
    "rule_definition" : {
       "+all" : [
          {
@@ -97,7 +124,7 @@
             "+re" : "[\\ \\t]*:\\s*"
          },
          {
-            "+rule" : "rule_item"
+            "+rule" : "rule_body"
          },
          {
             "+rule" : "rule_ending"

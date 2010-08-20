@@ -18,14 +18,15 @@ comment_line: /<HASH><line>/
 
 line: /<ANY>*<EOL>/
 
-rule_definition: /<WS>*/ <rule_name> /<BLANK>*<COLON><WS>*/ <rule_item> <rule_ending>
+rule_definition: /<WS>*/ <rule_name> /<BLANK>*<COLON><WS>*/ <rule_body> <rule_ending>
 
 rule_name: /(<ALPHA><WORD>*)/
 
-# rule_body:
-#     <bracketed_group> |
-#     <unbracketed_group> |
-#     <regular_expression>
+rule_body:
+    [ /(?=<LSQUARE>)/ <bracketed_group> ] |
+    [ /(?=<SLASH>)/ <regular_expression> ] |
+    <rule_group> |
+    <rule_reference>
 
 rule_item:
     <bracketed_group> |
@@ -50,7 +51,7 @@ rule_group:
     <all_group>
 
 all_group:
-    <rule_item> [ /<WS>*/ <rule_item>+ /<WS>*/ ]
+    <rule_item> [ /<WS>*/ <rule_item> ]+
 
 any_group:
     <rule_item> [ /<WS>*<PIPE><WS>*/ <rule_item> ]+
