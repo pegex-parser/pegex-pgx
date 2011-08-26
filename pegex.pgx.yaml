@@ -3,7 +3,7 @@
 all_group:
   .all:
   - .rul: rule_item
-  - +mod: +
+  - +mod: '*'
     .all:
     - .rgx: \s*
     - .rul: rule_item
@@ -39,13 +39,12 @@ regular_expression:
 rule_body:
   .any:
   - .all:
-    - .rgx: (?=\[)
-    - .rul: bracketed_group
-  - .all:
     - .rgx: (?=/)
     - .rul: regular_expression
+  - .all:
+    - .rgx: (?=\[)
+    - .rul: bracketed_group
   - .rul: rule_group
-  - .rul: rule_reference
 rule_definition:
   .all:
   - .rgx: \s*
@@ -67,4 +66,4 @@ rule_item:
 rule_name:
   .rgx: ([a-zA-Z]\w*)
 rule_reference:
-  .rgx: <([!&]?)([a-zA-Z]\w*)>([\*\+\?]?)
+  .rgx: ([!=]?)<([a-zA-Z]\w*)>([\*\+\?]?)

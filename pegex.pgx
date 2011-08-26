@@ -23,10 +23,9 @@ rule_definition: /<WS>*/ <rule_name> /<BLANK>*<COLON><WS>*/ <rule_body> <rule_en
 rule_name: /(<ALPHA><WORD>*)/
 
 rule_body:
-    [ /(?=<LSQUARE>)/ <bracketed_group> ] |
     [ /(?=<SLASH>)/ <regular_expression> ] |
-    <rule_group> |
-    <rule_reference>
+    [ /(?=<LSQUARE>)/ <bracketed_group> <all_group>? ] |
+    <rule_group>
 
 rule_item:
     <bracketed_group> |
@@ -36,9 +35,9 @@ rule_item:
 regular_expression: /<SLASH>([^<SLASH>]*)<SLASH>/
 
 rule_reference:
-    /<LANGLE>(<rule_modifier>?)<rule_name><RANGLE>(<rule_quantifier>?)/
+    /(<rule_modifier>?)<LANGLE><rule_name><RANGLE>(<rule_quantifier>?)/
 
-rule_modifier: /[<BANG><AMP>]/
+rule_modifier: /[<BANG><EQUAL>]/
 
 rule_quantifier: /[<STAR><PLUS><QMARK>]/
 
@@ -51,7 +50,7 @@ rule_group:
     <all_group>
 
 all_group:
-    <rule_item> [ /<WS>*/ <rule_item> ]+
+    <rule_item> [ /<WS>*/ <rule_item> ]*
 
 any_group:
     <rule_item> [ /<WS>*<PIPE><WS>*/ <rule_item> ]+

@@ -6,7 +6,7 @@
             ".rul" : "rule_item"
          },
          {
-            "+mod" : "+",
+            "+mod" : "*",
             ".all" : [
                {
                   ".rgx" : "\\s*"
@@ -87,16 +87,6 @@
          {
             ".all" : [
                {
-                  ".rgx" : "(?=\\[)"
-               },
-               {
-                  ".rul" : "bracketed_group"
-               }
-            ]
-         },
-         {
-            ".all" : [
-               {
                   ".rgx" : "(?=/)"
                },
                {
@@ -105,10 +95,17 @@
             ]
          },
          {
-            ".rul" : "rule_group"
+            ".all" : [
+               {
+                  ".rgx" : "(?=\\[)"
+               },
+               {
+                  ".rul" : "bracketed_group"
+               }
+            ]
          },
          {
-            ".rul" : "rule_reference"
+            ".rul" : "rule_group"
          }
       ]
    },
@@ -161,6 +158,6 @@
       ".rgx" : "([a-zA-Z]\\w*)"
    },
    "rule_reference" : {
-      ".rgx" : "<([!&]?)([a-zA-Z]\\w*)>([\\*\\+\\?]?)"
+      ".rgx" : "([!=]?)<([a-zA-Z]\\w*)>([\\*\\+\\?]?)"
    }
 }
