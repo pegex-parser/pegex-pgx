@@ -1,70 +1,70 @@
 ---
-_FIRST_RULE: grammar
++top: grammar
 all_group:
-  +all:
-  - +rule: rule_item
-  - +all:
-    - +re: \s*
-    - +rule: rule_item
-    <: +
+  .all:
+  - .rul: rule_item
+  - +mod: +
+    .all:
+    - .rgx: \s*
+    - .rul: rule_item
 any_group:
-  +all:
-  - +rule: rule_item
-  - +all:
-    - +re: \s*\|\s*
-    - +rule: rule_item
-    <: +
+  .all:
+  - .rul: rule_item
+  - +mod: +
+    .all:
+    - .rgx: \s*\|\s*
+    - .rul: rule_item
 bracketed_group:
-  +all:
-  - +re: \[\s*
-  - +rule: rule_group
-  - +re: \s*\]
-  - +rule: group_quantifier
-    <: '?'
+  .all:
+  - .rgx: \[\s*
+  - .rul: rule_group
+  - .rgx: \s*\]
+  - +mod: '?'
+    .rul: group_quantifier
 comment:
-  +re: (?:[\ \t]*\r?\n|\#.*\r?\n)
+  .rgx: (?:[\ \t]*\r?\n|\#.*\r?\n)
 grammar:
-  +all:
-  - +all:
-    - +rule: comment
-      <: '*'
-    - +rule: rule_definition
-    <: +
-  - +rule: comment
-    <: '*'
+  .all:
+  - +mod: +
+    .all:
+    - +mod: '*'
+      .rul: comment
+    - .rul: rule_definition
+  - +mod: '*'
+    .rul: comment
 group_quantifier:
-  +re: ([\*\+\?])
+  .rgx: ([\*\+\?])
 regular_expression:
-  +re: /([^/]*)/
+  .rgx: /([^/]*)/
 rule_body:
-  +any:
-  - +all:
-    - +re: (?=\[)
-    - +rule: bracketed_group
-  - +all:
-    - +re: (?=/)
-    - +rule: regular_expression
-  - +rule: rule_group
-  - +rule: rule_reference
+  .any:
+  - .all:
+    - .rgx: (?=\[)
+    - .rul: bracketed_group
+  - .all:
+    - .rgx: (?=/)
+    - .rul: regular_expression
+  - .rul: rule_group
+  - .rul: rule_reference
 rule_definition:
-  +all:
-  - +re: \s*
-  - +rule: rule_name
-  - +re: '[\ \t]*:\s*'
-  - +rule: rule_body
-  - +rule: rule_ending
+  .all:
+  - .rgx: \s*
+  - .rul: rule_name
+  - .rgx: '[\ \t]*:\s*'
+  - .rul: rule_body
+  - .rul: rule_ending
 rule_ending:
-  +re: \s*?(?:\n\s*|;\s*|\z)
+  .rgx: \s*?(?:\n\s*|;\s*|\z)
 rule_group:
-  +any:
-  - +rule: any_group
-  - +rule: all_group
+  .any:
+  - .rul: any_group
+  - .rul: all_group
 rule_item:
-  +any:
-  - +rule: bracketed_group
-  - +rule: regular_expression
-  - +rule: rule_reference
+  .any:
+  - .rul: bracketed_group
+  - .rul: regular_expression
+  - .rul: rule_reference
 rule_name:
-  +re: ([a-zA-Z]\w*)
+  .rgx: ([a-zA-Z]\w*)
 rule_reference:
-  +re: <([!&]?)([a-zA-Z]\w*)>([\*\+\?]?)
+  .rgx: <([!&]?)([a-zA-Z]\w*)>([\*\+\?]?)

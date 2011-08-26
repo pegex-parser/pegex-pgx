@@ -1,166 +1,166 @@
 {
-   "_FIRST_RULE" : "grammar",
+   "+top" : "grammar",
    "all_group" : {
-      "+all" : [
+      ".all" : [
          {
-            "+rule" : "rule_item"
+            ".rul" : "rule_item"
          },
          {
-            "+all" : [
+            "+mod" : "+",
+            ".all" : [
                {
-                  "+re" : "\\s*"
+                  ".rgx" : "\\s*"
                },
                {
-                  "+rule" : "rule_item"
+                  ".rul" : "rule_item"
                }
-            ],
-            "<" : "+"
+            ]
          }
       ]
    },
    "any_group" : {
-      "+all" : [
+      ".all" : [
          {
-            "+rule" : "rule_item"
+            ".rul" : "rule_item"
          },
          {
-            "+all" : [
+            "+mod" : "+",
+            ".all" : [
                {
-                  "+re" : "\\s*\\|\\s*"
+                  ".rgx" : "\\s*\\|\\s*"
                },
                {
-                  "+rule" : "rule_item"
+                  ".rul" : "rule_item"
                }
-            ],
-            "<" : "+"
+            ]
          }
       ]
    },
    "bracketed_group" : {
-      "+all" : [
+      ".all" : [
          {
-            "+re" : "\\[\\s*"
+            ".rgx" : "\\[\\s*"
          },
          {
-            "+rule" : "rule_group"
+            ".rul" : "rule_group"
          },
          {
-            "+re" : "\\s*\\]"
+            ".rgx" : "\\s*\\]"
          },
          {
-            "+rule" : "group_quantifier",
-            "<" : "?"
+            "+mod" : "?",
+            ".rul" : "group_quantifier"
          }
       ]
    },
    "comment" : {
-      "+re" : "(?:[\\ \\t]*\\r?\\n|\\#.*\\r?\\n)"
+      ".rgx" : "(?:[\\ \\t]*\\r?\\n|\\#.*\\r?\\n)"
    },
    "grammar" : {
-      "+all" : [
+      ".all" : [
          {
-            "+all" : [
+            "+mod" : "+",
+            ".all" : [
                {
-                  "+rule" : "comment",
-                  "<" : "*"
+                  "+mod" : "*",
+                  ".rul" : "comment"
                },
                {
-                  "+rule" : "rule_definition"
+                  ".rul" : "rule_definition"
                }
-            ],
-            "<" : "+"
+            ]
          },
          {
-            "+rule" : "comment",
-            "<" : "*"
+            "+mod" : "*",
+            ".rul" : "comment"
          }
       ]
    },
    "group_quantifier" : {
-      "+re" : "([\\*\\+\\?])"
+      ".rgx" : "([\\*\\+\\?])"
    },
    "regular_expression" : {
-      "+re" : "/([^/]*)/"
+      ".rgx" : "/([^/]*)/"
    },
    "rule_body" : {
-      "+any" : [
+      ".any" : [
          {
-            "+all" : [
+            ".all" : [
                {
-                  "+re" : "(?=\\[)"
+                  ".rgx" : "(?=\\[)"
                },
                {
-                  "+rule" : "bracketed_group"
+                  ".rul" : "bracketed_group"
                }
             ]
          },
          {
-            "+all" : [
+            ".all" : [
                {
-                  "+re" : "(?=/)"
+                  ".rgx" : "(?=/)"
                },
                {
-                  "+rule" : "regular_expression"
+                  ".rul" : "regular_expression"
                }
             ]
          },
          {
-            "+rule" : "rule_group"
+            ".rul" : "rule_group"
          },
          {
-            "+rule" : "rule_reference"
+            ".rul" : "rule_reference"
          }
       ]
    },
    "rule_definition" : {
-      "+all" : [
+      ".all" : [
          {
-            "+re" : "\\s*"
+            ".rgx" : "\\s*"
          },
          {
-            "+rule" : "rule_name"
+            ".rul" : "rule_name"
          },
          {
-            "+re" : "[\\ \\t]*:\\s*"
+            ".rgx" : "[\\ \\t]*:\\s*"
          },
          {
-            "+rule" : "rule_body"
+            ".rul" : "rule_body"
          },
          {
-            "+rule" : "rule_ending"
+            ".rul" : "rule_ending"
          }
       ]
    },
    "rule_ending" : {
-      "+re" : "\\s*?(?:\\n\\s*|;\\s*|\\z)"
+      ".rgx" : "\\s*?(?:\\n\\s*|;\\s*|\\z)"
    },
    "rule_group" : {
-      "+any" : [
+      ".any" : [
          {
-            "+rule" : "any_group"
+            ".rul" : "any_group"
          },
          {
-            "+rule" : "all_group"
+            ".rul" : "all_group"
          }
       ]
    },
    "rule_item" : {
-      "+any" : [
+      ".any" : [
          {
-            "+rule" : "bracketed_group"
+            ".rul" : "bracketed_group"
          },
          {
-            "+rule" : "regular_expression"
+            ".rul" : "regular_expression"
          },
          {
-            "+rule" : "rule_reference"
+            ".rul" : "rule_reference"
          }
       ]
    },
    "rule_name" : {
-      "+re" : "([a-zA-Z]\\w*)"
+      ".rgx" : "([a-zA-Z]\\w*)"
    },
    "rule_reference" : {
-      "+re" : "<([!&]?)([a-zA-Z]\\w*)>([\\*\\+\\?]?)"
+      ".rgx" : "<([!&]?)([a-zA-Z]\\w*)>([\\*\\+\\?]?)"
    }
 }
