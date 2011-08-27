@@ -1,7 +1,4 @@
 # This is the Pegex grammar for Pegex grammars!
-#
-# It is written a slightly strict format so that it can be bootstrap
-# parsed by a non-Pegex parser.
 
 grammar:
     [
@@ -9,6 +6,48 @@ grammar:
         <rule_definition>
     ]+
     <comment>*
+
+rule_definition:
+    /<WS>*/
+    <rule_name> /<BLANK>*<COLON><WS>*/
+    <rule_group>
+    <rule_ending>
+
+rule_group: <any_group> | <all_group>
+
+all_group:
+    <rule_item>
+    [ /<WS>*/ <rule_item> ]*
+
+any_group:
+    <rule_item>
+    [ /<WS>*<PIPE><WS>*/ <rule_item> ]+
+
+rule_item:
+    <rule_reference> |
+    <regular_expression> |
+    <bracketed_group> |
+    <error_message>
+
+rule_reference:
+    /(<rule_modifier>?)<LANGLE><rule_name><RANGLE>(<rule_quantifier>?)/
+
+regular_expression: /<SLASH>([^<SLASH><DOS>]*)<SLASH>/
+
+bracketed_group:
+    /<LSQUARE><WS>*/
+    <rule_group>
+    /<WS>*<RSQUARE>(<rule_quantifier>?)/
+
+error_message: /<GRAVE>([^<GRAVE><DOS>]*)<GRAVE>/
+
+rule_modifier: /[<BANG><EQUAL>]/
+
+rule_quantifier: /[<STAR><PLUS><QMARK>]/
+
+rule_name: /(<ALPHA><WORD>*)/
+
+rule_ending: /<WS>*?(?:<BREAK><WS>*|<SEMI><WS>*|<EOS>)/
 
 comment: /(?:<blank_line>|<comment_line>)/
 
@@ -18,41 +57,3 @@ comment_line: /<HASH><line>/
 
 line: /<ANY>*<EOL>/
 
-rule_definition: /<WS>*/ <rule_name> /<BLANK>*<COLON><WS>*/ <rule_body> <rule_ending>
-
-rule_name: /(<ALPHA><WORD>*)/
-
-rule_body:
-    [ /(?=<SLASH>)/ <regular_expression> ] |
-    [ /(?=<LSQUARE>)/ <bracketed_group> <all_group>? ] |
-    <rule_group>
-
-rule_item:
-    <bracketed_group> |
-    <regular_expression> |
-    <rule_reference>
-
-regular_expression: /<SLASH>([^<SLASH>]*)<SLASH>/
-
-rule_reference:
-    /(<rule_modifier>?)<LANGLE><rule_name><RANGLE>(<rule_quantifier>?)/
-
-rule_modifier: /[<BANG><EQUAL>]/
-
-rule_quantifier: /[<STAR><PLUS><QMARK>]/
-
-bracketed_group: /<LSQUARE><WS>*/ <rule_group> /<WS>*<RSQUARE>/ <group_quantifier>?
-
-group_quantifier: /(<rule_quantifier>)/
-
-rule_group:
-    <any_group> |
-    <all_group>
-
-all_group:
-    <rule_item> [ /<WS>*/ <rule_item> ]*
-
-any_group:
-    <rule_item> [ /<WS>*<PIPE><WS>*/ <rule_item> ]+
-
-rule_ending: /<WS>*?(?:<BREAK><WS>*|<SEMI><WS>*|<EOS>)/

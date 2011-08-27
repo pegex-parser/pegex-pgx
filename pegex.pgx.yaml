@@ -18,11 +18,11 @@ bracketed_group:
   .all:
   - .rgx: \[\s*
   - .rul: rule_group
-  - .rgx: \s*\]
-  - +mod: '?'
-    .rul: group_quantifier
+  - .rgx: \s*\]([\*\+\?]?)
 comment:
   .rgx: (?:[\ \t]*\r?\n|\#.*\r?\n)
+error_message:
+  .rgx: '`([^`\r\n]*)`'
 grammar:
   .all:
   - +mod: +
@@ -32,25 +32,14 @@ grammar:
     - .rul: rule_definition
   - +mod: '*'
     .rul: comment
-group_quantifier:
-  .rgx: ([\*\+\?])
 regular_expression:
-  .rgx: /([^/]*)/
-rule_body:
-  .any:
-  - .all:
-    - .rgx: (?=/)
-    - .rul: regular_expression
-  - .all:
-    - .rgx: (?=\[)
-    - .rul: bracketed_group
-  - .rul: rule_group
+  .rgx: /([^/\r\n]*)/
 rule_definition:
   .all:
   - .rgx: \s*
   - .rul: rule_name
   - .rgx: '[\ \t]*:\s*'
-  - .rul: rule_body
+  - .rul: rule_group
   - .rul: rule_ending
 rule_ending:
   .rgx: \s*?(?:\n\s*|;\s*|\z)
@@ -60,9 +49,10 @@ rule_group:
   - .rul: all_group
 rule_item:
   .any:
-  - .rul: bracketed_group
-  - .rul: regular_expression
   - .rul: rule_reference
+  - .rul: regular_expression
+  - .rul: bracketed_group
+  - .rul: error_message
 rule_name:
   .rgx: ([a-zA-Z]\w*)
 rule_reference:
