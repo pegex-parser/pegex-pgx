@@ -2,22 +2,22 @@
 +top: grammar
 all_group:
   .all:
-  - .rul: rule_item
+  - .ref: rule_item
   - +mod: '*'
     .all:
     - .rgx: \s*
-    - .rul: rule_item
+    - .ref: rule_item
 any_group:
   .all:
-  - .rul: rule_item
+  - .ref: rule_item
   - +mod: +
     .all:
     - .rgx: \s*\|\s*
-    - .rul: rule_item
+    - .ref: rule_item
 bracketed_group:
   .all:
   - .rgx: \[\s*
-  - .rul: rule_group
+  - .ref: rule_group
   - .rgx: \s*\]([\*\+\?]?)
 comment:
   .rgx: (?:[\ \t]*\r?\n|\#.*\r?\n)
@@ -28,31 +28,31 @@ grammar:
   - +mod: +
     .all:
     - +mod: '*'
-      .rul: comment
-    - .rul: rule_definition
+      .ref: comment
+    - .ref: rule_definition
   - +mod: '*'
-    .rul: comment
+    .ref: comment
 regular_expression:
   .rgx: /([^/\r\n]*)/
 rule_definition:
   .all:
   - .rgx: \s*
-  - .rul: rule_name
+  - .ref: rule_name
   - .rgx: '[\ \t]*:\s*'
-  - .rul: rule_group
-  - .rul: rule_ending
+  - .ref: rule_group
+  - .ref: rule_ending
 rule_ending:
   .rgx: \s*?(?:\n\s*|;\s*|\z)
 rule_group:
   .any:
-  - .rul: any_group
-  - .rul: all_group
+  - .ref: any_group
+  - .ref: all_group
 rule_item:
   .any:
-  - .rul: rule_reference
-  - .rul: regular_expression
-  - .rul: bracketed_group
-  - .rul: error_message
+  - .ref: rule_reference
+  - .ref: regular_expression
+  - .ref: bracketed_group
+  - .ref: error_message
 rule_name:
   .rgx: ([a-zA-Z]\w*)
 rule_reference:

@@ -3,7 +3,7 @@
    "all_group" : {
       ".all" : [
          {
-            ".rul" : "rule_item"
+            ".ref" : "rule_item"
          },
          {
             "+mod" : "*",
@@ -12,7 +12,7 @@
                   ".rgx" : "\\s*"
                },
                {
-                  ".rul" : "rule_item"
+                  ".ref" : "rule_item"
                }
             ]
          }
@@ -21,7 +21,7 @@
    "any_group" : {
       ".all" : [
          {
-            ".rul" : "rule_item"
+            ".ref" : "rule_item"
          },
          {
             "+mod" : "+",
@@ -30,7 +30,7 @@
                   ".rgx" : "\\s*\\|\\s*"
                },
                {
-                  ".rul" : "rule_item"
+                  ".ref" : "rule_item"
                }
             ]
          }
@@ -42,7 +42,7 @@
             ".rgx" : "\\[\\s*"
          },
          {
-            ".rul" : "rule_group"
+            ".ref" : "rule_group"
          },
          {
             ".rgx" : "\\s*\\]([\\*\\+\\?]?)"
@@ -62,16 +62,16 @@
             ".all" : [
                {
                   "+mod" : "*",
-                  ".rul" : "comment"
+                  ".ref" : "comment"
                },
                {
-                  ".rul" : "rule_definition"
+                  ".ref" : "rule_definition"
                }
             ]
          },
          {
             "+mod" : "*",
-            ".rul" : "comment"
+            ".ref" : "comment"
          }
       ]
    },
@@ -84,16 +84,16 @@
             ".rgx" : "\\s*"
          },
          {
-            ".rul" : "rule_name"
+            ".ref" : "rule_name"
          },
          {
             ".rgx" : "[\\ \\t]*:\\s*"
          },
          {
-            ".rul" : "rule_group"
+            ".ref" : "rule_group"
          },
          {
-            ".rul" : "rule_ending"
+            ".ref" : "rule_ending"
          }
       ]
    },
@@ -103,26 +103,26 @@
    "rule_group" : {
       ".any" : [
          {
-            ".rul" : "any_group"
+            ".ref" : "any_group"
          },
          {
-            ".rul" : "all_group"
+            ".ref" : "all_group"
          }
       ]
    },
    "rule_item" : {
       ".any" : [
          {
-            ".rul" : "rule_reference"
+            ".ref" : "rule_reference"
          },
          {
-            ".rul" : "regular_expression"
+            ".ref" : "regular_expression"
          },
          {
-            ".rul" : "bracketed_group"
+            ".ref" : "bracketed_group"
          },
          {
-            ".rul" : "error_message"
+            ".ref" : "error_message"
          }
       ]
    },
