@@ -1,7 +1,7 @@
 export PERL5LIB=../pegex-pm/lib
 
 COMPILE_COMMAND = perl -MPegex::Compiler -e \
-    'print Pegex::Compiler->compile_file(shift)->to_
+    'print Pegex::Compiler->compile_raw(shift)->to_
 
 all: pegex.pgx.yaml pegex.pgx.json
 
