@@ -1,36 +1,24 @@
 {
    "+top" : "grammar",
    "all_group" : {
-      ".all" : [
-         {
-            ".ref" : "rule_item"
-         },
-         {
-            "+mod" : "*",
-            ".all" : [
-               {
-                  ".rgx" : "\\s*"
-               },
-               {
-                  ".ref" : "rule_item"
-               }
-            ]
-         }
-      ]
+      ".ref" : "rule_part",
+      ".sep" : {
+         ".rgx" : "\\s*"
+      }
    },
    "any_group" : {
       ".all" : [
          {
-            ".ref" : "rule_item"
+            ".ref" : "rule_part"
          },
          {
-            "+mod" : "+",
+            "+qty" : "+",
             ".all" : [
                {
                   ".rgx" : "\\s*\\|\\s*"
                },
                {
-                  ".ref" : "rule_item"
+                  ".ref" : "rule_part"
                }
             ]
          }
@@ -39,7 +27,7 @@
    "bracketed_group" : {
       ".all" : [
          {
-            ".rgx" : "\\[\\s*"
+            ".rgx" : "(\\.?)\\[\\s*"
          },
          {
             ".ref" : "rule_group"
@@ -58,10 +46,11 @@
    "grammar" : {
       ".all" : [
          {
-            "+mod" : "+",
+            "+qty" : "+",
             ".all" : [
                {
-                  "+mod" : "*",
+                  "+qty" : "*",
+                  "-skip" : 1,
                   ".ref" : "comment"
                },
                {
@@ -70,7 +59,8 @@
             ]
          },
          {
-            "+mod" : "*",
+            "+qty" : "*",
+            "-skip" : 1,
             ".ref" : "comment"
          }
       ]
@@ -129,7 +119,25 @@
    "rule_name" : {
       ".rgx" : "([a-zA-Z]\\w*)"
    },
+   "rule_part" : {
+      ".all" : [
+         {
+            ".ref" : "rule_item"
+         },
+         {
+            "+qty" : "?",
+            ".all" : [
+               {
+                  ".rgx" : "\\s*\\s\\*\\*\\s\\s*"
+               },
+               {
+                  ".ref" : "rule_item"
+               }
+            ]
+         }
+      ]
+   },
    "rule_reference" : {
-      ".rgx" : "([!=]?)<([a-zA-Z]\\w*)>([\\*\\+\\?]?)"
+      ".rgx" : "([!=\\+\\-\\.]?)<([a-zA-Z]\\w*)>([\\*\\+\\?]?)"
    }
 }

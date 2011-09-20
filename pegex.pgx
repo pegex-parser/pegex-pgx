@@ -2,26 +2,26 @@
 
 grammar:
     [
-        <comment>*
+        .<comment>*
         <rule_definition>
     ]+
-    <comment>*
+    .<comment>*
 
 rule_definition:
-    /<WS>*/
-    <rule_name> /<BLANK>*<COLON><WS>*/
+    /~/
+    <rule_name> /<BLANK>*<COLON>~/
     <rule_group>
     <rule_ending>
 
 rule_group: <any_group> | <all_group>
 
-all_group:
-    <rule_item>
-    [ /<WS>*/ <rule_item> ]*
+all_group: <rule_part> ** /~/
 
 any_group:
-    <rule_item>
-    [ /<WS>*<PIPE><WS>*/ <rule_item> ]+
+    <rule_part>
+    [ /~<PIPE>~/ <rule_part> ]+
+
+rule_part: <rule_item> [ /~<WS><STAR><STAR><WS>~/ <rule_item> ]?
 
 rule_item:
     <rule_reference> |
@@ -35,19 +35,19 @@ rule_reference:
 regular_expression: /<SLASH>([^<SLASH><DOS>]*)<SLASH>/
 
 bracketed_group:
-    /<LSQUARE><WS>*/
+    /(<DOT>?)<LSQUARE>~/
     <rule_group>
-    /<WS>*<RSQUARE>(<rule_quantifier>?)/
+    /~<RSQUARE>(<rule_quantifier>?)/
 
 error_message: /<GRAVE>([^<GRAVE><DOS>]*)<GRAVE>/
 
-rule_modifier: /[<BANG><EQUAL>]/
+rule_modifier: /[<BANG><EQUAL><PLUS><DASH><DOT>]/
 
 rule_quantifier: /[<STAR><PLUS><QMARK>]/
 
 rule_name: /(<ALPHA><WORD>*)/
 
-rule_ending: /<WS>*?(?:<BREAK><WS>*|<SEMI><WS>*|<EOS>)/
+rule_ending: /~?(?:<BREAK>~|<SEMI>~|<EOS>)/
 
 comment: /(?:<blank_line>|<comment_line>)/
 
