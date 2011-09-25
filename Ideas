@@ -1,0 +1,9 @@
+== These are grammars I would like to see:
+
+- pcre.pgx - PCRE Regular Expressions
+- tt2.pgx - Template Toolkit II
+- perl6.pgx - Perl 6
+- coffee.pgx - CoffeeScript
+- yaml.pgx - YAML
+- kwim.pgx - Kwim Markup
+- socialtext.pgx - Socialtext Markup
