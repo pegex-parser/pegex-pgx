@@ -1,11 +1,6 @@
 # This is the Pegex grammar for Pegex grammars!
 
-grammar:
-    [
-        .<comment>*
-        <rule_definition>
-    ]+
-    .<comment>*
+grammar: .<comment>* <rule_definition>+ %% .<comment>*
 
 rule_definition:
     /~/
@@ -15,13 +10,11 @@ rule_definition:
 
 rule_group: <any_group> | <all_group>
 
-all_group: <rule_part> ** /~/
+all_group: <rule_part>+ % /~/
 
-any_group:
-    <rule_part>
-    [ /~<PIPE>~/ <rule_part> ]+
+any_group: <rule_part>2+ % /~<PIPE>~/
 
-rule_part: <rule_item> [ /~<WS><STAR><STAR><WS>~/ <rule_item> ]?
+rule_part: <rule_item>1-2 % /~<WS>(<PERCENT><PERCENT>?)<WS>~/
 
 rule_item:
     <rule_reference> |
@@ -35,7 +28,7 @@ rule_reference:
 regular_expression: /<SLASH>([^<SLASH><DOS>]*)<SLASH>/
 
 bracketed_group:
-    /(<DOT>?)<LSQUARE>~/
+    /(<group_modifier>?)<LSQUARE>~/
     <rule_group>
     /~<RSQUARE>(<rule_quantifier>?)/
 
@@ -43,7 +36,9 @@ error_message: /<GRAVE>([^<GRAVE><DOS>]*)<GRAVE>/
 
 rule_modifier: /[<BANG><EQUAL><PLUS><DASH><DOT>]/
 
-rule_quantifier: /[<STAR><PLUS><QMARK>]/
+group_modifier: /[<DOT>]/
+
+rule_quantifier: /(?:[<STAR><PLUS><QMARK>]|<DIGIT>+(?:<DASH><DIGIT>+|<PLUS>)?)/
 
 rule_name: /(<ALPHA><WORD>*)/
 
