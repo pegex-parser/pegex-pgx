@@ -51,4 +51,3 @@ blank_line: /<BLANK>*<EOL>/
 comment_line: /<HASH><line>/
 
 line: /<ANY>*<EOL>/
-
