@@ -1,39 +1,29 @@
 {
    "+top" : "grammar",
    "all_group" : {
+      "+min" : 1,
       ".ref" : "rule_part",
       ".sep" : {
          ".rgx" : "\\s*"
       }
    },
    "any_group" : {
-      ".all" : [
-         {
-            ".ref" : "rule_part"
-         },
-         {
-            "+qty" : "+",
-            ".all" : [
-               {
-                  ".rgx" : "\\s*\\|\\s*"
-               },
-               {
-                  ".ref" : "rule_part"
-               }
-            ]
-         }
-      ]
+      "+min" : "2",
+      ".ref" : "rule_part",
+      ".sep" : {
+         ".rgx" : "\\s*\\|\\s*"
+      }
    },
    "bracketed_group" : {
       ".all" : [
          {
-            ".rgx" : "(\\.?)\\[\\s*"
+            ".rgx" : "([\\.]?)\\[\\s*"
          },
          {
             ".ref" : "rule_group"
          },
          {
-            ".rgx" : "\\s*\\]([\\*\\+\\?]?)"
+            ".rgx" : "\\s*\\]((?:[\\*\\+\\?]|[0-9]+(?:\\-[0-9]+|\\+)?)?)"
          }
       ]
    },
@@ -46,22 +36,19 @@
    "grammar" : {
       ".all" : [
          {
-            "+qty" : "+",
-            ".all" : [
-               {
-                  "+qty" : "*",
-                  "-skip" : 1,
-                  ".ref" : "comment"
-               },
-               {
-                  ".ref" : "rule_definition"
-               }
-            ]
-         },
-         {
-            "+qty" : "*",
+            "+min" : 0,
             "-skip" : 1,
             ".ref" : "comment"
+         },
+         {
+            "+min" : 1,
+            ".ref" : "rule_definition",
+            ".sep" : {
+               "+eok" : 1,
+               "+min" : 0,
+               "-skip" : 1,
+               ".ref" : "comment"
+            }
          }
       ]
    },
@@ -120,24 +107,14 @@
       ".rgx" : "([a-zA-Z]\\w*)"
    },
    "rule_part" : {
-      ".all" : [
-         {
-            ".ref" : "rule_item"
-         },
-         {
-            "+qty" : "?",
-            ".all" : [
-               {
-                  ".rgx" : "\\s*\\s\\*\\*\\s\\s*"
-               },
-               {
-                  ".ref" : "rule_item"
-               }
-            ]
-         }
-      ]
+      "+max" : "2",
+      "+min" : "1",
+      ".ref" : "rule_item",
+      ".sep" : {
+         ".rgx" : "\\s*\\s(%%?)\\s\\s*"
+      }
    },
    "rule_reference" : {
-      ".rgx" : "([!=\\+\\-\\.]?)<([a-zA-Z]\\w*)>([\\*\\+\\?]?)"
+      ".rgx" : "([!=\\+\\-\\.]?)<([a-zA-Z]\\w*)>((?:[\\*\\+\\?]|[0-9]+(?:\\-[0-9]+|\\+)?)?)"
    }
 }
