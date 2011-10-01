@@ -17,17 +17,33 @@ bracketed_group:
   - .rgx: \s*\]((?:[\*\+\?]|[0-9]+(?:\-[0-9]+|\+)?)?)
 comment:
   .rgx: (?:[\ \t]*\r?\n|\#.*\r?\n)
+ending:
+  .rgx: \s*?(?:\n\s*|;\s*|\z)
 error_message:
   .rgx: '`([^`\r\n]*)`'
 grammar:
-  +min: 1
-  .ref: rule_definition
+  .all:
+  - .ref: meta_section
+  - .ref: rule_section
+meta_definition:
+  .all:
+  - .rgx: '%'
+  - .ref: meta_name
+  - .rgx: '[\ \t]+'
+  - .ref: meta_value
+meta_name:
+  .rgx: (grammar|extends|include|version)
+meta_section:
+  +min: 0
+  .ref: meta_definition
   .sep:
     +bok: 1
     +eok: 1
     +min: 0
     -skip: 1
     .ref: comment
+meta_value:
+  .rgx: '[\ \t]*([^;\n]*?)[\ \t]*\s*?(?:\n\s*|;\s*|\z)'
 regular_expression:
   .rgx: /([^/\r\n]*)/
 rule_definition:
@@ -36,9 +52,7 @@ rule_definition:
   - .ref: rule_name
   - .rgx: '[\ \t]*:\s*'
   - .ref: rule_group
-  - .ref: rule_ending
-rule_ending:
-  .rgx: \s*?(?:\n\s*|;\s*|\z)
+  - .ref: ending
 rule_group:
   .any:
   - .ref: any_group
@@ -59,3 +73,12 @@ rule_part:
     .rgx: \s*\s(%{1,3})\s\s*
 rule_reference:
   .rgx: ([!=\+\-\.]?)<([a-zA-Z]\w*)>((?:[\*\+\?]|[0-9]+(?:\-[0-9]+|\+)?)?)
+rule_section:
+  +min: 1
+  .ref: rule_definition
+  .sep:
+    +bok: 1
+    +eok: 1
+    +min: 0
+    -skip: 1
+    .ref: comment

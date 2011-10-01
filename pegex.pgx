@@ -1,12 +1,21 @@
 # This is the Pegex grammar for Pegex grammars!
 
-grammar: <rule_definition>+ %%% .<comment>*
+grammar: <meta_section> <rule_section>
+
+meta_section: <meta_definition>* %%% .<comment>*
+
+rule_section: <rule_definition>+ %%% .<comment>*
+
+meta_definition:
+    /<PERCENT>/
+    <meta_name> /<BLANK>+/
+    <meta_value>
 
 rule_definition:
     /~/
     <rule_name> /<BLANK>*<COLON>~/
     <rule_group>
-    <rule_ending>
+    <ending>
 
 rule_group: <any_group> | <all_group>
 
@@ -40,9 +49,13 @@ group_modifier: /[<DOT>]/
 
 rule_quantifier: /(?:[<STAR><PLUS><QMARK>]|<DIGIT>+(?:<DASH><DIGIT>+|<PLUS>)?)/
 
+meta_name: /(grammar|extends|include|version)/
+
+meta_value: /<BLANK>*([^<SEMI><BREAK>]*?)<BLANK>*<ending>/
+
 rule_name: /(<ALPHA><WORD>*)/
 
-rule_ending: /~?(?:<BREAK>~|<SEMI>~|<EOS>)/
+ending: /~?(?:<BREAK>~|<SEMI>~|<EOS>)/
 
 comment: /(?:<blank_line>|<comment_line>)/
 
