@@ -1,6 +1,6 @@
 # This is the Pegex grammar for Pegex grammars!
 
-grammar: .<comment>* <rule_definition>+ %% .<comment>*
+grammar: <rule_definition>+ %%% .<comment>*
 
 rule_definition:
     /~/
