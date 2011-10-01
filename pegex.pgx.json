@@ -1,5 +1,7 @@
 {
+   "+grammar" : "pegex",
    "+top" : "grammar",
+   "+version" : "0.0.1",
    "all_group" : {
       "+min" : 1,
       ".ref" : "rule_part",

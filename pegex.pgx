@@ -1,4 +1,6 @@
 # This is the Pegex grammar for Pegex grammars!
+%grammar pegex
+%version 0.0.1
 
 grammar: <meta_section> <rule_section>
 
