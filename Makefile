@@ -1,6 +1,6 @@
 GRAMMAR = *.pgx
-export PERL5LIB=../pegex-pm/lib
-COMPILE_COMMAND = pegex compile --to=
+export PERL5LIB=../pegex-pm/lib:../pegex-cmd-pm/lib
+COMPILE_COMMAND = pegex compile --boot --to=
 ALL = $(GRAMMAR).yaml $(GRAMMAR).json
 
 all: $(ALL)
