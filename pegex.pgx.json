@@ -69,14 +69,15 @@
    },
    "meta_section" : {
       "+min" : 0,
-      ".ref" : "meta_definition",
-      ".sep" : {
-         "+bok" : 1,
-         "+eok" : 1,
-         "+min" : 0,
-         "-skip" : 1,
-         ".ref" : "comment"
-      }
+      ".any" : [
+         {
+            ".ref" : "meta_definition"
+         },
+         {
+            "-skip" : 1,
+            ".ref" : "comment"
+         }
+      ]
    },
    "meta_value" : {
       ".rgx" : "[\\ \\t]*([^;\\n]*?)[\\ \\t]*\\s*?(?:\\n\\s*|;\\s*|\\z)"
@@ -137,21 +138,22 @@
       "+min" : "1",
       ".ref" : "rule_item",
       ".sep" : {
-         ".rgx" : "\\s*\\s(%{1,3})\\s\\s*"
+         ".rgx" : "\\s*\\s(%{1,2})\\s\\s*"
       }
    },
    "rule_reference" : {
       ".rgx" : "([!=\\+\\-\\.]?)<([a-zA-Z]\\w*)>((?:[\\*\\+\\?]|[0-9]+(?:\\-[0-9]+|\\+)?)?)"
    },
    "rule_section" : {
-      "+min" : 1,
-      ".ref" : "rule_definition",
-      ".sep" : {
-         "+bok" : 1,
-         "+eok" : 1,
-         "+min" : 0,
-         "-skip" : 1,
-         ".ref" : "comment"
-      }
+      "+min" : 0,
+      ".any" : [
+         {
+            ".ref" : "rule_definition"
+         },
+         {
+            "-skip" : 1,
+            ".ref" : "comment"
+         }
+      ]
    }
 }
