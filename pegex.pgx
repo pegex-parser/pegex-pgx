@@ -2,9 +2,9 @@
 %grammar pegex
 %version 0.0.1
 
-grammar: <meta_section> <rule_section>
+grammar: meta_section rule_section
 
-meta_section: [ <meta_definition> | .<comment> ]*
+meta_section: [ meta_definition | .comment ]*
 
 rule_section: [ <rule_definition> | .<comment> ]*
 
@@ -35,7 +35,8 @@ rule_item:
     <error_message>
 
 rule_reference:
-    /(<rule_modifier>?)<LANGLE><rule_name><RANGLE>(<rule_quantifier>?)/
+    /(<rule_modifier>?)<LANGLE><rule_name><RANGLE>(<rule_quantifier>?)/ |
+    /(<rule_modifier>?)<rule_name>(<rule_quantifier>?)(?!<COLON>)/
 
 regular_expression: /<SLASH>([^<SLASH><DOS>]*)<SLASH>/
 
@@ -59,7 +60,7 @@ meta_name: /(grammar|extends|include|version)/
 
 meta_value: /<BLANK>*([^<SEMI><BREAK>]*?)<BLANK>*<ending>/
 
-rule_name: /(<ALPHA><WORD>*)/
+rule_name: /(<ALPHA><WORD>*)\b/
 
 ending: /~?(?:<BREAK>~|<SEMI>~|<EOS>)/
 
