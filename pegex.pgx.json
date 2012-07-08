@@ -126,6 +126,9 @@
             ".ref" : "bracketed_group"
          },
          {
+            ".ref" : "whitespace_token"
+         },
+         {
             ".ref" : "error_message"
          }
       ]
@@ -155,5 +158,8 @@
             ".ref" : "comment"
          }
       ]
+   },
+   "whitespace_token" : {
+      ".rgx" : "(\\~\\~?)"
    }
 }

@@ -31,6 +31,7 @@ rule_item:
     <rule_reference> |
     <regular_expression> |
     <bracketed_group> |
+    <whitespace_token> |
     <error_message>
 
 rule_reference:
@@ -42,6 +43,9 @@ bracketed_group:
     /(<group_modifier>?)<LSQUARE>~/
     <rule_group>
     /~<RSQUARE>(<rule_quantifier>?)/
+
+whitespace_token:
+    /(<TILDE><TILDE>?)/
 
 error_message: /<GRAVE>([^<GRAVE><DOS>]*)<GRAVE>/
 

@@ -61,6 +61,7 @@ rule_item:
   - .ref: rule_reference
   - .ref: regular_expression
   - .ref: bracketed_group
+  - .ref: whitespace_token
   - .ref: error_message
 rule_name:
   .rgx: ([a-zA-Z]\w*)
@@ -78,3 +79,5 @@ rule_section:
   - .ref: rule_definition
   - -skip: 1
     .ref: comment
+whitespace_token:
+  .rgx: (\~\~?)
