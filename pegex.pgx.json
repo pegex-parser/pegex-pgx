@@ -138,7 +138,7 @@
       "+min" : "1",
       ".ref" : "rule_item",
       ".sep" : {
-         ".rgx" : "\\s*\\s(%{1,2})\\s\\s*"
+         ".rgx" : "\\s+(%{1,2})\\s+"
       }
    },
    "rule_reference" : {

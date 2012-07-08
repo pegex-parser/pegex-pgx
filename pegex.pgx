@@ -14,18 +14,18 @@ meta_definition:
     <meta_value>
 
 rule_definition:
-    /~/
+    ~
     <rule_name> /<BLANK>*<COLON>~/
     <rule_group>
     <ending>
 
 rule_group: <any_group> | <all_group>
 
-all_group: <rule_part>+ % /~/
+all_group: <rule_part>+ % ~
 
 any_group: <rule_part>2+ % /~<PIPE>~/
 
-rule_part: <rule_item>1-2 % /~<WS>(<PERCENT>{1,2})<WS>~/
+rule_part: <rule_item>1-2 % /~~(<PERCENT>{1,2})~~/
 
 rule_item:
     <rule_reference> |
