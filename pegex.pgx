@@ -6,33 +6,33 @@ grammar: meta_section rule_section
 
 meta_section: [ meta_definition | .comment ]*
 
-rule_section: [ <rule_definition> | .<comment> ]*
+rule_section: [ rule_definition | .comment ]*
 
 meta_definition:
     /<PERCENT>/
-    <meta_name> /<BLANK>+/
-    <meta_value>
+    meta_name /<BLANK>+/
+    meta_value
 
 rule_definition:
     ~
-    <rule_name> /<BLANK>*<COLON>~/
-    <rule_group>
-    <ending>
+    rule_name /<BLANK>*<COLON>~/
+    rule_group
+    ending
 
-rule_group: <any_group> | <all_group>
+rule_group: any_group | all_group
 
-all_group: <rule_part>+ % ~
+all_group: rule_part+ % ~
 
 any_group: <rule_part>2+ % /~<PIPE>~/
 
 rule_part: <rule_item>1-2 % /~~(<PERCENT>{1,2})~~/
 
 rule_item:
-    <rule_reference> |
-    <regular_expression> |
-    <bracketed_group> |
-    <whitespace_token> |
-    <error_message>
+    rule_reference |
+    regular_expression |
+    bracketed_group |
+    whitespace_token |
+    error_message
 
 rule_reference:
     /(<rule_modifier>?)<LANGLE><rule_name><RANGLE>(<rule_quantifier>?)/ |
@@ -42,7 +42,7 @@ regular_expression: /<SLASH>([^<SLASH><DOS>]*)<SLASH>/
 
 bracketed_group:
     /(<group_modifier>?)<LSQUARE>~/
-    <rule_group>
+    rule_group
     /~<RSQUARE>(<rule_quantifier>?)/
 
 whitespace_token:
