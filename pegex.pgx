@@ -46,7 +46,7 @@ rule_reference:
     /
         (<rule_modifier>?)
         <rule_name>
-        (<rule_quantifier>?)(?!<COLON>)
+        (<rule_quantifier>?)(!<COLON>)
     /
 
 regular_expression:
@@ -69,9 +69,9 @@ group_modifier: / [<DOT>] /
 
 rule_quantifier:
     /
-        (?:
+        (:
             [<STAR><PLUS><QMARK>] |
-            <DIGIT>+ (?: <DASH><DIGIT>+ | <PLUS>)?
+            <DIGIT>+ (: <DASH><DIGIT>+ | <PLUS>)?
         )
     /
 
@@ -93,9 +93,9 @@ meta_value:
 
 rule_name: / (<ALPHA><WORD>*)\b /
 
-ending: / ~? (?: <BREAK> ~ | <SEMI> ~ | <EOS> ) /
+ending: / ~? (: <BREAK> ~ | <SEMI> ~ | <EOS> ) /
 
-comment: / (?: <blank_line> | <comment_line> ) /
+comment: / (: <blank_line> | <comment_line> ) /
 
 blank_line: / <BLANK>* <EOL> /
 
