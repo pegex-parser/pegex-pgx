@@ -83,7 +83,7 @@
       ".rgx" : "[\\ \\t]*([^;\\n]*?)[\\ \\t]*\\s*?(?:\\n\\s*|;\\s*|\\z)"
    },
    "regular_expression" : {
-      ".rgx" : "/([^/\\r\\n]*)/"
+      ".rgx" : "/([^/]*)/"
    },
    "rule_definition" : {
       ".all" : [

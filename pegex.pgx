@@ -1,4 +1,5 @@
 # This is the Pegex grammar for Pegex grammars!
+
 %grammar pegex
 %version 0.1.0
 
@@ -9,13 +10,14 @@ meta_section: ( meta_definition | .comment )*
 rule_section: ( rule_definition | .comment )*
 
 meta_definition:
-    /<PERCENT>/
-    meta_name /<BLANK>+/
+    / <PERCENT> /
+    meta_name
+    / <BLANK>+ /
     meta_value
 
 rule_definition:
     ~
-    rule_name /<BLANK>*<COLON>~/
+    rule_name / <BLANK>* <COLON> ~ /
     rule_group
     ending
 
@@ -35,39 +37,68 @@ rule_item:
     error_message
 
 rule_reference:
-    /(<rule_modifier>?)<LANGLE><rule_name><RANGLE>(<rule_quantifier>?)/ |
-    /(<rule_modifier>?)<rule_name>(<rule_quantifier>?)(?!<COLON>)/
+    /
+        (<rule_modifier>?)
+        <LANGLE><rule_name><RANGLE>
+        (<rule_quantifier>?)
+    /
+        |
+    /
+        (<rule_modifier>?)
+        <rule_name>
+        (<rule_quantifier>?)(?!<COLON>)
+    /
 
-regular_expression: /<SLASH>([^<SLASH><DOS>]*)<SLASH>/
+regular_expression:
+    / <SLASH> ([^<SLASH>]*) <SLASH> /
 
 bracketed_group:
-    /(<group_modifier>?)<LPAREN>~/
+    / (<group_modifier>?) <LPAREN> ~ /
     rule_group
-    /~<RPAREN>(<rule_quantifier>?)/
+    / ~ <RPAREN> (<rule_quantifier>?) /
 
 whitespace_token:
-    /(<TILDE><TILDE>?)/
+    / (<TILDE><TILDE>?) /
 
-error_message: /<GRAVE>([^<GRAVE><DOS>]*)<GRAVE>/
+error_message:
+    / <GRAVE> ([^<GRAVE><DOS>]*) <GRAVE> /
 
-rule_modifier: /[<BANG><EQUAL><PLUS><DASH><DOT>]/
+rule_modifier: / [<BANG><EQUAL><PLUS><DASH><DOT>] /
 
-group_modifier: /[<DOT>]/
+group_modifier: / [<DOT>] /
 
-rule_quantifier: /(?:[<STAR><PLUS><QMARK>]|<DIGIT>+(?:<DASH><DIGIT>+|<PLUS>)?)/
+rule_quantifier:
+    /
+        (?:
+            [<STAR><PLUS><QMARK>] |
+            <DIGIT>+ (?: <DASH><DIGIT>+ | <PLUS>)?
+        )
+    /
 
-meta_name: /(grammar|extends|include|version)/
+meta_name:
+    /(
+        grammar |
+        extends |
+        include |
+        version
+    )/
 
-meta_value: /<BLANK>*([^<SEMI><BREAK>]*?)<BLANK>*<ending>/
+meta_value:
+    /
+        <BLANK>*
+        ([^<SEMI><BREAK>]*?)
+        <BLANK>*
+        <ending>
+    /
 
-rule_name: /(<ALPHA><WORD>*)\b/
+rule_name: / (<ALPHA><WORD>*)\b /
 
-ending: /~?(?:<BREAK>~|<SEMI>~|<EOS>)/
+ending: / ~? (?: <BREAK> ~ | <SEMI> ~ | <EOS> ) /
 
-comment: /(?:<blank_line>|<comment_line>)/
+comment: / (?: <blank_line> | <comment_line> ) /
 
-blank_line: /<BLANK>*<EOL>/
+blank_line: / <BLANK>* <EOL> /
 
-comment_line: /<HASH><line>/
+comment_line: / <HASH> <line> /
 
-line: /<ANY>*<EOL>/
+line: / <ANY>* <EOL> /

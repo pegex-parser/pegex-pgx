@@ -44,7 +44,7 @@ meta_section:
 meta_value:
   .rgx: '[\ \t]*([^;\n]*?)[\ \t]*\s*?(?:\n\s*|;\s*|\z)'
 regular_expression:
-  .rgx: /([^/\r\n]*)/
+  .rgx: /([^/]*)/
 rule_definition:
   .all:
   - .rgx: \s*
