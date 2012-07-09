@@ -14,9 +14,9 @@ any_group:
     .rgx: \s*\|\s*
 bracketed_group:
   .all:
-  - .rgx: ([\.]?)\[\s*
+  - .rgx: ([\.]?)\(\s*
   - .ref: rule_group
-  - .rgx: \s*\]((?:[\*\+\?]|[0-9]+(?:\-[0-9]+|\+)?)?)
+  - .rgx: \s*\)((?:[\*\+\?]|[0-9]+(?:\-[0-9]+|\+)?)?)
 comment:
   .rgx: (?:[\ \t]*\r?\n|\#.*\r?\n)
 ending:
