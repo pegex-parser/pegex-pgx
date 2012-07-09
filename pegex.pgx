@@ -4,9 +4,9 @@
 
 grammar: meta_section rule_section
 
-meta_section: [ meta_definition | .comment ]*
+meta_section: ( meta_definition | .comment )*
 
-rule_section: [ rule_definition | .comment ]*
+rule_section: ( rule_definition | .comment )*
 
 meta_definition:
     /<PERCENT>/
