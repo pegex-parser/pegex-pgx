@@ -14,7 +14,7 @@ any_group:
     .rgx: \s*\|\s*
 bracketed_group:
   .all:
-  - .rgx: ([\.]?)\(\s*
+  - .rgx: (\.?)\(\s*
   - .ref: rule_group
   - .rgx: \s*\)((?:[\*\+\?]|[0-9]+(?:\-[0-9]+|\+)?)?)
 comment:
@@ -72,7 +72,7 @@ rule_part:
   .sep:
     .rgx: \s+(%{1,2})\s+
 rule_reference:
-  .rgx: ([!=\+\-\.]?)(([a-zA-Z]\w*)\b|(?:<([a-zA-Z]\w*)\b>))((?:[\*\+\?]|[0-9]+(?:\-[0-9]+|\+)?)?)(?!:)
+  .rgx: ([!=\+\-\.]?)(?:([a-zA-Z]\w*)\b|(?:<([a-zA-Z]\w*)\b>))((?:[\*\+\?]|[0-9]+(?:\-[0-9]+|\+)?)?)(?!:)
 rule_section:
   +min: 0
   .any:
@@ -80,4 +80,4 @@ rule_section:
   - -skip: 1
     .ref: comment
 whitespace_token:
-  .rgx: (\~\~?)
+  .rgx: (\~{1,2})

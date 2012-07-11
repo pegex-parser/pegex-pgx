@@ -3,6 +3,7 @@
 %grammar pegex
 %version 0.1.0
 
+
 grammar: meta_section rule_section
 
 meta_section: ( meta_definition | .comment )*
@@ -28,7 +29,7 @@ all_group: rule_part+ % ~
 
 any_group: <rule_part>2+ % / ~ <PIPE> ~ /
 
-rule_part: <rule_item>1-2 % / ~~ (<PERCENT>{1,2}) ~~ /
+rule_part: <rule_item>1-2 % / ~~ ( <PERCENT>{1,2} ) ~~ /
 
 rule_item:
     rule_reference |
@@ -39,55 +40,53 @@ rule_item:
 
 rule_reference:
     /
-        (<rule_modifier>?) (:
+        ( <rule_modifier>? ) (:
             <rule_name> |
             (: <LANGLE> <rule_name> <RANGLE> )
-        ) (<rule_quantifier>?) (!<COLON>)
+        ) ( <rule_quantifier>? ) (! <COLON> )
     /
 
 regular_expression:
-    / <SLASH> ([^<SLASH>]*) <SLASH> /
+    / <SLASH> ( [^ <SLASH> ]* ) <SLASH> /
 
 bracketed_group:
-    / (<group_modifier>?) <LPAREN> ~ /
+    / ( <group_modifier>? ) <LPAREN> ~ /
     rule_group
-    / ~ <RPAREN> (<rule_quantifier>?) /
+    / ~ <RPAREN> ( <rule_quantifier>? ) /
 
 whitespace_token:
-    / (<TILDE><TILDE>?) /
+    / ( <TILDE>{1,2} ) /
 
 error_message:
-    / <GRAVE> ([^<GRAVE><DOS>]*) <GRAVE> /
+    / <GRAVE> ( [^ <GRAVE> <DOS> ]* ) <GRAVE> /
 
-rule_modifier: / [<BANG><EQUAL><PLUS><DASH><DOT>] /
+rule_modifier: / [ <BANG> <EQUAL> <PLUS> <DASH> <DOT> ] /
 
-group_modifier: / [<DOT>] /
+group_modifier: / <DOT> /
 
 rule_quantifier:
-    /
-        (:
-            [<STAR><PLUS><QMARK>] |
-            <DIGIT>+ (: <DASH><DIGIT>+ | <PLUS>)?
-        )
-    /
+    / (:
+        [ <STAR> <PLUS> <QMARK> ] |
+        <DIGIT>+ (: <DASH><DIGIT>+ | <PLUS>)?
+    ) /
 
 meta_name:
-    /(
+    / (
         grammar |
         extends |
         include |
         version
-    )/
+    ) /
 
 meta_value:
     /
         <BLANK>*
-        ([^<SEMI><BREAK>]*?)
+        ( [^ <SEMI> <BREAK> ]*? )
         <BLANK>*
         <ending>
     /
 
-rule_name: / (<ALPHA><WORD>*)\b /
+rule_name: / ( <ALPHA><WORD>* )\b /
 
 ending: / ~? (: <BREAK> ~ | <SEMI> ~ | <EOS> ) /
 
