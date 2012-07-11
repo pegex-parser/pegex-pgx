@@ -17,7 +17,8 @@ meta_definition:
 
 rule_definition:
     ~
-    rule_name / <BLANK>* <COLON> ~ /
+    rule_name
+    / <BLANK>* <COLON> ~ /
     rule_group
     ending
 
@@ -25,9 +26,9 @@ rule_group: any_group | all_group
 
 all_group: rule_part+ % ~
 
-any_group: <rule_part>2+ % /~<PIPE>~/
+any_group: <rule_part>2+ % / ~ <PIPE> ~ /
 
-rule_part: <rule_item>1-2 % /~~(<PERCENT>{1,2})~~/
+rule_part: <rule_item>1-2 % / ~~ (<PERCENT>{1,2}) ~~ /
 
 rule_item:
     rule_reference |
@@ -38,15 +39,10 @@ rule_item:
 
 rule_reference:
     /
-        (<rule_modifier>?)
-        <LANGLE><rule_name><RANGLE>
-        (<rule_quantifier>?)
-    /
-        |
-    /
-        (<rule_modifier>?)
-        <rule_name>
-        (<rule_quantifier>?)(!<COLON>)
+        (<rule_modifier>?) (:
+            <rule_name> |
+            (: <LANGLE> <rule_name> <RANGLE> )
+        ) (<rule_quantifier>?) (!<COLON>)
     /
 
 regular_expression:
