@@ -46,23 +46,7 @@
       ]
    },
    "meta_definition" : {
-      ".all" : [
-         {
-            ".rgx" : "%"
-         },
-         {
-            ".ref" : "meta_name"
-         },
-         {
-            ".rgx" : "[\\ \\t]+"
-         },
-         {
-            ".ref" : "meta_value"
-         }
-      ]
-   },
-   "meta_name" : {
-      ".rgx" : "(grammar|extends|include|version)"
+      ".rgx" : "%(grammar|extends|include|version)[\\ \\t]+[\\ \\t]*([^;\\n]*?)[\\ \\t]*(?:\\s|\\#.*\\n)*?(?:\\n(?:\\s|\\#.*\\n)*|;(?:\\s|\\#.*\\n)*|\\z)"
    },
    "meta_section" : {
       "+min" : 0,
@@ -74,9 +58,6 @@
             ".rgx" : "(?:\\s|\\#.*\\n)+"
          }
       ]
-   },
-   "meta_value" : {
-      ".rgx" : "[\\ \\t]*([^;\\n]*?)[\\ \\t]*(?:\\s|\\#.*\\n)*?(?:\\n(?:\\s|\\#.*\\n)*|;(?:\\s|\\#.*\\n)*|\\z)"
    },
    "regular_expression" : {
       ".rgx" : "/([^/]*)/"

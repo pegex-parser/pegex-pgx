@@ -11,10 +11,7 @@ meta_section: ( meta_definition | ~~ )*
 rule_section: ( rule_definition | ~~ )*
 
 meta_definition:
-    / <PERCENT> /
-    meta_name
-    / <BLANK>+ /
-    meta_value
+    / <PERCENT> <meta_name> <BLANK>+ <meta_value> /
 
 rule_definition: rule_start rule_group ending
 
@@ -71,12 +68,7 @@ rule_quantifier:
     ) /
 
 meta_name:
-    / (
-        grammar |
-        extends |
-        include |
-        version
-    ) /
+    / ( grammar | extends | include | version) /
 
 meta_value:
     /
