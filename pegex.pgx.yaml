@@ -47,9 +47,7 @@ regular_expression:
   .rgx: /([^/]*)/
 rule_definition:
   .all:
-  - .rgx: \s*
-  - .ref: rule_name
-  - .rgx: '[\ \t]*:\s*'
+  - .ref: rule_start
   - .ref: rule_group
   - .ref: ending
 rule_group:
@@ -63,8 +61,6 @@ rule_item:
   - .ref: bracketed_group
   - .ref: whitespace_token
   - .ref: error_message
-rule_name:
-  .rgx: ([a-zA-Z]\w*)\b
 rule_part:
   +max: '2'
   +min: '1'
@@ -72,12 +68,15 @@ rule_part:
   .sep:
     .rgx: \s+(%{1,2})\s+
 rule_reference:
-  .rgx: ([!=\+\-\.]?)(?:([a-zA-Z]\w*)\b|(?:<([a-zA-Z]\w*)\b>))((?:[\*\+\?]|[0-9]+(?:\-[0-9]+|\+)?)?)(?!:)
+  .rgx: ([!=\+\-\.]?)(?:([a-zA-Z]\w*\b)|(?:<([a-zA-Z]\w*\b)>))((?:[\*\+\?]|[0-9]+(?:\-[0-9]+|\+)?)?)(?![\
+    \t]*:)
 rule_section:
   +min: 0
   .any:
   - .ref: rule_definition
   - -skip: 1
     .ref: comment
+rule_start:
+  .rgx: \s*([a-zA-Z]\w*\b)[\ \t]*:\s*
 whitespace_token:
-  .rgx: (\~{1,2})
+  .rgx: (\~+)

@@ -16,12 +16,9 @@ meta_definition:
     / <BLANK>+ /
     meta_value
 
-rule_definition:
-    ~
-    rule_name
-    / <BLANK>* <COLON> ~ /
-    rule_group
-    ending
+rule_definition: rule_start rule_group ending
+
+rule_start: / ~ ( <rule_name> ) <BLANK>* <COLON> ~ /
 
 rule_group: any_group | all_group
 
@@ -40,11 +37,14 @@ rule_item:
 
 rule_reference:
     /
-        ( <rule_modifier>? ) (:
-            <rule_name> |
-            (: <LANGLE> <rule_name> <RANGLE> )
-        ) ( <rule_quantifier>? ) (! <COLON> )
-    /
+        ( <rule_modifier>? )        # [=!.-+]
+            (:                      # foo | <foo>
+                ( <rule_name> ) |
+                (: <LANGLE> ( <rule_name> ) <RANGLE> )
+            )
+        ( <rule_quantifier>? )      # [?*+] 2+ 2-3
+        (! <BLANK>* <COLON> )       # Avoid parsing 'foo:'
+    /                               # as a rule reference.
 
 regular_expression:
     / <SLASH> ( [^ <SLASH> ]* ) <SLASH> /
@@ -55,7 +55,7 @@ bracketed_group:
     / ~ <RPAREN> ( <rule_quantifier>? ) /
 
 whitespace_token:
-    / ( <TILDE>{1,2} ) /
+    / ( <TILDE>+ ) /
 
 error_message:
     / <GRAVE> ( [^ <GRAVE> <DOS> ]* ) <GRAVE> /
@@ -86,7 +86,7 @@ meta_value:
         <ending>
     /
 
-rule_name: / ( <ALPHA><WORD>* )\b /
+rule_name: / <ALPHA> <WORD>* \b /
 
 ending: / ~? (: <BREAK> ~ | <SEMI> ~ | <EOS> ) /
 
