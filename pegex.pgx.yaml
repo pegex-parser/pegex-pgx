@@ -6,21 +6,19 @@ all_group:
   +min: 1
   .ref: rule_part
   .sep:
-    .rgx: \s*
+    .rgx: (?:\s|\#.*\n)*
 any_group:
   +min: '2'
   .ref: rule_part
   .sep:
-    .rgx: \s*\|\s*
+    .rgx: (?:\s|\#.*\n)*\|(?:\s|\#.*\n)*
 bracketed_group:
   .all:
-  - .rgx: (\.?)\(\s*
+  - .rgx: (\.?)\((?:\s|\#.*\n)*
   - .ref: rule_group
-  - .rgx: \s*\)((?:[\*\+\?]|[0-9]+(?:\-[0-9]+|\+)?)?)
-comment:
-  .rgx: (?:[\ \t]*\r?\n|\#.*\r?\n)
+  - .rgx: (?:\s|\#.*\n)*\)((?:[\*\+\?]|[0-9]+(?:\-[0-9]+|\+)?)?)
 ending:
-  .rgx: \s*?(?:\n\s*|;\s*|\z)
+  .rgx: (?:\s|\#.*\n)*?(?:\n(?:\s|\#.*\n)*|;(?:\s|\#.*\n)*|\z)
 error_message:
   .rgx: '`([^`\r\n]*)`'
 grammar:
@@ -39,10 +37,9 @@ meta_section:
   +min: 0
   .any:
   - .ref: meta_definition
-  - -skip: 1
-    .ref: comment
+  - .rgx: (?:\s|\#.*\n)+
 meta_value:
-  .rgx: '[\ \t]*([^;\n]*?)[\ \t]*\s*?(?:\n\s*|;\s*|\z)'
+  .rgx: '[\ \t]*([^;\n]*?)[\ \t]*(?:\s|\#.*\n)*?(?:\n(?:\s|\#.*\n)*|;(?:\s|\#.*\n)*|\z)'
 regular_expression:
   .rgx: /([^/]*)/
 rule_definition:
@@ -66,7 +63,7 @@ rule_part:
   +min: '1'
   .ref: rule_item
   .sep:
-    .rgx: \s+(%{1,2})\s+
+    .rgx: (?:\s|\#.*\n)+(%{1,2})(?:\s|\#.*\n)+
 rule_reference:
   .rgx: ([!=\+\-\.]?)(?:([a-zA-Z]\w*\b)|(?:<([a-zA-Z]\w*\b)>))((?:[\*\+\?]|[0-9]+(?:\-[0-9]+|\+)?)?)(?![\
     \t]*:)
@@ -74,9 +71,8 @@ rule_section:
   +min: 0
   .any:
   - .ref: rule_definition
-  - -skip: 1
-    .ref: comment
+  - .rgx: (?:\s|\#.*\n)+
 rule_start:
-  .rgx: \s*([a-zA-Z]\w*\b)[\ \t]*:\s*
+  .rgx: ([a-zA-Z]\w*\b)[\ \t]*:(?:\s|\#.*\n)*
 whitespace_token:
   .rgx: (\~+)

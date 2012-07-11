@@ -6,9 +6,9 @@
 
 grammar: meta_section rule_section
 
-meta_section: ( meta_definition | .comment )*
+meta_section: ( meta_definition | ~~ )*
 
-rule_section: ( rule_definition | .comment )*
+rule_section: ( rule_definition | ~~ )*
 
 meta_definition:
     / <PERCENT> /
@@ -18,7 +18,7 @@ meta_definition:
 
 rule_definition: rule_start rule_group ending
 
-rule_start: / ~ ( <rule_name> ) <BLANK>* <COLON> ~ /
+rule_start: / ( <rule_name> ) <BLANK>* <COLON> ~ /
 
 rule_group: any_group | all_group
 
@@ -90,10 +90,6 @@ rule_name: / <ALPHA> <WORD>* \b /
 
 ending: / ~? (: <BREAK> ~ | <SEMI> ~ | <EOS> ) /
 
-comment: / (: <blank_line> | <comment_line> ) /
+ws: / (: <WS> | <comment> ) /
 
-blank_line: / <BLANK>* <EOL> /
-
-comment_line: / <HASH> <line> /
-
-line: / <ANY>* <EOL> /
+comment: / <HASH> <ANY>* <BREAK> /
