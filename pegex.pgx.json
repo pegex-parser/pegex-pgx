@@ -11,7 +11,7 @@
    },
    "any_group" : {
       "+min" : "2",
-      ".ref" : "rule_part",
+      ".ref" : "all_group",
       ".sep" : {
          ".rgx" : "(?:\\s|\\#.*\\n)*\\|(?:\\s|\\#.*\\n)*"
       }
