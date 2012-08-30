@@ -84,4 +84,4 @@ ending: / ~? (: <BREAK> ~ | <SEMI> ~ | <EOS> ) /
 
 ws: / (: <WS> | <comment> ) /
 
-comment: / <HASH> <ANY>* <BREAK> /
+comment: / <HASH> <ANY>* (: <BREAK> | <EOS> ) /
