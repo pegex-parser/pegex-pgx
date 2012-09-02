@@ -10,3 +10,4 @@ all: $(ALL)
 
 $(ALL): $(GRAMMAR) Makefile
 	$(COMMAND)$(@:$<.%=%) $< > $@
+	perl -pi -e "s/\r//g" $@
