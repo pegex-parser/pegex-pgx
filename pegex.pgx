@@ -103,7 +103,7 @@ ERROR_rule_ending: `Rule ending syntax error`
 ERROR_pre_rule_item:
     ERROR_pre_rule_reference |
     ERROR_bracketed_group
-    
+
 ERROR_post_rule_item:
     ERROR_post_rule_reference |
     ERROR_regular_expression |
@@ -136,7 +136,7 @@ ERROR_rule_reference3:    =ERROR_rule_reference3_re `Missing < in rule reference
 ERROR_rule_reference3_re: / <rule_modifier>? <rule_name> <RANGLE> /
 
 ERROR_rule_reference4:    =ERROR_rule_reference4_re `Illegal character in rule quantifier`
-ERROR_rule_reference4_re: 
+ERROR_rule_reference4_re:
     /
         <rule_modifier>?
         (: <rule_name> | <LANGLE> <rule_name> <RANGLE> )
