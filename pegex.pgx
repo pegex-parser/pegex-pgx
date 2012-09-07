@@ -53,8 +53,11 @@ regular_expression:
 bracketed_group:
     / ( <group_modifier>? ) <LPAREN> ~ /
     rule_group
-    / ~ <RPAREN> ( <rule_quantifier>? ) /
-
+    (
+        ERROR_inner_bracketed_group |
+        / ~ <RPAREN> ( <rule_quantifier>? ) /
+    )
+    
 whitespace_token:
     / ( <TILDE>+ ) /
 
@@ -118,7 +121,7 @@ ERROR_rule_ending:
 
 ERROR_pre_rule_item:
     ERROR_pre_rule_reference |
-    ERROR_bracketed_group
+    ERROR_pre_bracketed_group
 
 ERROR_post_rule_item:
     ERROR_post_rule_reference |
@@ -159,17 +162,15 @@ ERROR_regular_expression:
     `Runaway regular expression; no ending slash at EOF`
 
 # Errors - bracketed_group
-ERROR_bracketed_group:
+ERROR_pre_bracketed_group:
     /(! <group_modifier>) (= <illegal_non_modifier_char> <LPAREN> )/
     `Illegal group rule modifier (can only use .)`
-|
-    # XXX - Too much lookahead here. Need to refactor.
-    / <group_modifier>? <LPAREN> ~ / rule_group doc_ending
+
+ERROR_inner_bracketed_group:
+    =doc_ending
     `Runaway rule group; no ending parens at EOF`
 |
-    / <group_modifier>? <LPAREN> ~ /
-    rule_group
-    / ~ <RPAREN> <illegal_non_quantifier_char> /
+    / (= ~ <RPAREN> <illegal_non_quantifier_char> ) /
     `Illegal character in group rule quantifier`
 
 # Errors - error_message

@@ -2,52 +2,6 @@
    "+grammar" : "pegex",
    "+toprule" : "grammar",
    "+version" : "0.2.0",
-   "ERROR_bracketed_group" : {
-      ".any" : [
-         {
-            ".all" : [
-               {
-                  ".rgx" : "(?!\\.)(?=[^\\w\\(\\)</\\~\\|`\\s]\\()"
-               },
-               {
-                  ".err" : "Illegal group rule modifier (can only use .)"
-               }
-            ]
-         },
-         {
-            ".all" : [
-               {
-                  ".rgx" : "\\.?\\((?:\\s|\\#.*(?:\\n|\\z))*"
-               },
-               {
-                  ".ref" : "rule_group"
-               },
-               {
-                  ".ref" : "doc_ending"
-               },
-               {
-                  ".err" : "Runaway rule group; no ending parens at EOF"
-               }
-            ]
-         },
-         {
-            ".all" : [
-               {
-                  ".rgx" : "\\.?\\((?:\\s|\\#.*(?:\\n|\\z))*"
-               },
-               {
-                  ".ref" : "rule_group"
-               },
-               {
-                  ".rgx" : "(?:\\s|\\#.*(?:\\n|\\z))*\\)[^\\w\\(\\)</\\~\\|`\\s\\*\\+\\?!=\\+\\-\\.:;]"
-               },
-               {
-                  ".err" : "Illegal character in group rule quantifier"
-               }
-            ]
-         }
-      ]
-   },
    "ERROR_error_message" : {
       ".any" : [
          {
@@ -67,6 +21,31 @@
                },
                {
                   ".err" : "Runaway error message; no ending grave at EOF"
+               }
+            ]
+         }
+      ]
+   },
+   "ERROR_inner_bracketed_group" : {
+      ".any" : [
+         {
+            ".all" : [
+               {
+                  "+asr" : 1,
+                  ".ref" : "doc_ending"
+               },
+               {
+                  ".err" : "Runaway rule group; no ending parens at EOF"
+               }
+            ]
+         },
+         {
+            ".all" : [
+               {
+                  ".rgx" : "(?=(?:\\s|\\#.*(?:\\n|\\z))*\\)[^\\w\\(\\)</\\~\\|`\\s\\*\\+\\?!=\\+\\-\\.:;])"
+               },
+               {
+                  ".err" : "Illegal character in group rule quantifier"
                }
             ]
          }
@@ -112,13 +91,23 @@
          }
       ]
    },
+   "ERROR_pre_bracketed_group" : {
+      ".all" : [
+         {
+            ".rgx" : "(?!\\.)(?=[^\\w\\(\\)</\\~\\|`\\s]\\()"
+         },
+         {
+            ".err" : "Illegal group rule modifier (can only use .)"
+         }
+      ]
+   },
    "ERROR_pre_rule_item" : {
       ".any" : [
          {
             ".ref" : "ERROR_pre_rule_reference"
          },
          {
-            ".ref" : "ERROR_bracketed_group"
+            ".ref" : "ERROR_pre_bracketed_group"
          }
       ]
    },
@@ -237,7 +226,14 @@
             ".ref" : "rule_group"
          },
          {
-            ".rgx" : "(?:\\s|\\#.*(?:\\n|\\z))*\\)((?:[\\*\\+\\?]|[0-9]+(?:\\-[0-9]+|\\+)?)?)"
+            ".any" : [
+               {
+                  ".ref" : "ERROR_inner_bracketed_group"
+               },
+               {
+                  ".rgx" : "(?:\\s|\\#.*(?:\\n|\\z))*\\)((?:[\\*\\+\\?]|[0-9]+(?:\\-[0-9]+|\\+)?)?)"
+               }
+            ]
          }
       ]
    },
