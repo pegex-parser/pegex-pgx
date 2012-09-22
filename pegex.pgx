@@ -87,7 +87,7 @@ meta_value:
 
 rule_name: / <ALPHA> <WORD>* \b /
 
-ending: / ~? (: <BREAK> ~ | <SEMI> ~ | <EOS> ) /
+ending: / ~? (: <BREAK> ~ | <SEMI> ~ | <comment> ~ <SEMI>? ~ | <EOS> ) /
 
 ws: / (: <WS> | <comment> ) /
 
