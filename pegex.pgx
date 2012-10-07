@@ -53,7 +53,10 @@ regular_expression:
 bracketed_group:
     / ( <group_modifier>? ) <LPAREN> ~ /
     rule_group
-    / ~ <RPAREN> ( <rule_quantifier>? ) /
+    (
+        ERROR_inner_bracketed_group |
+        / ~ <RPAREN> ( <rule_quantifier>? ) /
+    )
 
 whitespace_token:
     / ( <TILDE>+ ) /
@@ -84,7 +87,7 @@ meta_value:
 
 rule_name: / <ALPHA> <WORD>* \b /
 
-ending: / ~? (: <BREAK> ~ | <SEMI> ~ | <EOS> ) /
+ending: / ~? (: <BREAK> ~ | <SEMI> ~ | <comment> ~ <SEMI>? ~ | <EOS> ) /
 
 ws: / (: <WS> | <comment> ) /
 
@@ -118,7 +121,7 @@ ERROR_rule_ending:
 
 ERROR_pre_rule_item:
     ERROR_pre_rule_reference |
-    ERROR_bracketed_group
+    ERROR_pre_bracketed_group
 
 ERROR_post_rule_item:
     ERROR_post_rule_reference |
@@ -148,7 +151,7 @@ ERROR_pre_rule_reference:
 |
 (
     /(= <rule_modifier>? <rule_name> <DASH> )/
-    `Unprotected rule name with numeric quantifier; please use <rule>#-# syntax!`
+    `Unprotected rule name with numeric quantifier. Please use <rule>#-# syntax!`
 )
 
 ERROR_post_rule_reference:
@@ -164,25 +167,21 @@ ERROR_post_rule_reference:
 # Errors - regular_expression
 ERROR_regular_expression:
     /(= <SLASH> ( [^ <SLASH> ]* ) <doc_ending> )/
-    `Runaway regular expression; no ending slash at EOF`
+    `Runaway regular expression. No ending slash at EOF`
 
 # Errors - bracketed_group
-ERROR_bracketed_group:
-(
+ERROR_pre_bracketed_group:
     /(! <group_modifier>) (= <illegal_non_modifier_char> <LPAREN> )/
     `Illegal group rule modifier (can only use .)`
+
+ERROR_inner_bracketed_group:
+(
+    =doc_ending
+    `Runaway rule group. No ending parens at EOF`
 )
 |
 (
-    # XXX - Too much lookahead here. Need to refactor.
-    / <group_modifier>? <LPAREN> ~ / rule_group doc_ending
-    `Runaway rule group; no ending parens at EOF`
-)
-|
-(
-    / <group_modifier>? <LPAREN> ~ /
-    rule_group
-    / ~ <RPAREN> <illegal_non_quantifier_char> /
+    / (= ~ <RPAREN> <illegal_non_quantifier_char> ) /
     `Illegal character in group rule quantifier`
 )
 
@@ -195,7 +194,7 @@ ERROR_error_message:
 |
 (
     /(= <GRAVE> [^ <GRAVE> ]* <doc_ending> )/
-    `Runaway error message; no ending grave at EOF`
+    `Runaway error message. No ending grave at EOF`
 )
 
 # Errors - separation
