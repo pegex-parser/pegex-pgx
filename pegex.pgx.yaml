@@ -78,15 +78,19 @@ ERROR_separation:
     - .rgx: (?=(?:\s|\#.*(?:\n|\z))*%{1,2}[^\s])
     - .err: Illegal characters in separator indicator
 all_group:
-  +min: 1
-  .ref: rule_part
-  .sep:
-    .rgx: (?:\s|\#.*(?:\n|\z))*
+  .all:
+  - .ref: rule_part
+  - +min: 0
+    .all:
+    - .rgx: (?:\s|\#.*(?:\n|\z))*
+    - .ref: rule_part
 any_group:
-  +min: '2'
-  .ref: all_group
-  .sep:
-    .rgx: (?:\s|\#.*(?:\n|\z))*\|(?:\s|\#.*(?:\n|\z))*
+  .all:
+  - .ref: all_group
+  - +min: 0
+    .all:
+    - .rgx: (?:\s|\#.*(?:\n|\z))*\|(?:\s|\#.*(?:\n|\z))*
+    - .ref: all_group
 bracketed_group:
   .all:
   - .rgx: (\.?)\((?:\s|\#.*(?:\n|\z))*
@@ -123,9 +127,7 @@ rule_definition:
     - .ref: ending
     - .ref: ERROR_rule_ending
 rule_group:
-  .any:
-  - .ref: any_group
-  - .ref: all_group
+  .ref: any_group
 rule_item:
   .any:
   - .ref: ERROR_pre_rule_item
