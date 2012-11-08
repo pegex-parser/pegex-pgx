@@ -10,3 +10,6 @@ all: $(ALL)
 
 $(ALL): $(GRAMMAR) Makefile
 	$(COMPILE_COMMAND)$(shell perl -e '$$_="$@";s/.*\.//;print') $(shell perl -e '$$_="$@";s/\.\w+$$//;print') > $@
+
+clean purge:
+	rm -f *.yaml *.json
