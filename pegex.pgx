@@ -29,11 +29,11 @@ all_group: rule_part (~ rule_part)*
 rule_part: <rule_item>1-2 % / ~~ ( <PERCENT>{1,2} ) ~~ /
 
 rule_item:
-    rule_reference |
-    regular_expression |
-    bracketed_group |
-    whitespace_token |
-    error_message
+  | rule_reference
+  | regular_expression
+  | bracketed_group
+  | whitespace_token
+  | error_message
 
 rule_reference:
     /
