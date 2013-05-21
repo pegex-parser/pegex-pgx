@@ -1,5 +1,6 @@
 ---
 +grammar: pegex
++include: pegex-atoms
 +toprule: grammar
 +version: 0.2.0
 ERROR_all_group:
