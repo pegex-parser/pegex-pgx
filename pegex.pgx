@@ -22,7 +22,7 @@ rule_start: / ( <rule_name> ) <BLANK>* <COLON> ~ /
 
 rule_group: any_group
 
-any_group: all_group ( / ~ <PIPE> ~ / all_group )*
+any_group: / ~ <PIPE>? ~ / all_group ( / ~ <PIPE> ~ / all_group )*
 
 all_group: rule_part (~ rule_part)*
 
