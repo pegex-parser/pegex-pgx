@@ -145,10 +145,10 @@ rule_group:
   .ref: any_group
 rule_item:
   .any:
+  - .ref: whitespace_token
   - .ref: rule_reference
   - .ref: regular_expression
   - .ref: bracketed_group
-  - .ref: whitespace_token
   - .ref: error_message
 rule_modifier:
   .rgx: '[!=\+\-\.]'
@@ -169,4 +169,4 @@ rule_section:
 rule_start:
   .rgx: ((?:[a-zA-Z][a-zA-Z0-9]*(?:[\-_][a-zA-Z0-9]+)*|\-+|_+)(?=[^\w\-]))[\ \t]*:(?:\s|\#.*(?:\n|\z))*
 whitespace_token:
-  .rgx: (\~+)
+  .rgx: (\~+|\++|\-+)

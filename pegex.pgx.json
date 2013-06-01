@@ -355,6 +355,9 @@
    "rule_item" : {
       ".any" : [
          {
+            ".ref" : "whitespace_token"
+         },
+         {
             ".ref" : "rule_reference"
          },
          {
@@ -362,9 +365,6 @@
          },
          {
             ".ref" : "bracketed_group"
-         },
-         {
-            ".ref" : "whitespace_token"
          },
          {
             ".ref" : "error_message"
@@ -400,6 +400,6 @@
       ".rgx" : "((?:[a-zA-Z][a-zA-Z0-9]*(?:[\\-_][a-zA-Z0-9]+)*|\\-+|_+)(?=[^\\w\\-]))[\\ \\t]*:(?:\\s|\\#.*(?:\\n|\\z))*"
    },
    "whitespace_token" : {
-      ".rgx" : "(\\~+)"
+      ".rgx" : "(\\~+|\\++|\\-+)"
    }
 }
