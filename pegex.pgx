@@ -92,7 +92,7 @@ rule-name: /
 /
 
 ending: /
-  ~?
+  - ?
   (:
     <BREAK> - <SEMI>? - |
     <comment> - <SEMI>? - |
