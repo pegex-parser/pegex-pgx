@@ -25,7 +25,7 @@ ERROR_bracketed_group:
       - .all:
         - +asr: 1
           .ref: doc_ending
-        - .err: Runaway rule group no ending parens at EOF
+        - .err: Runaway rule group. No ending parens at EOF
       - .all:
         - .rgx: (?=(?:\s|\#.*(?:\n|\z))*\)[^\w\(\)</\~\|`\s\*\+\?!=\+\-\.:;])
         - .err: Illegal character in group rule quantifier
@@ -36,7 +36,7 @@ ERROR_error_message:
     - .err: Multi-line error messages not allowed!
   - .all:
     - .rgx: (?=`[^`]*(?:\s|\#.*(?:\n|\z))*\z)
-    - .err: Runaway error message no ending grave at EOF
+    - .err: Runaway error message. No ending grave at EOF
 ERROR_meta_definition:
   .all:
   - .rgx: (?=%\w+)
@@ -44,7 +44,7 @@ ERROR_meta_definition:
 ERROR_regular_expression:
   .all:
   - .rgx: (?=/([^/]*)(?:\s|\#.*(?:\n|\z))*\z)
-  - .err: Runaway regular expression no ending slash at EOF
+  - .err: Runaway regular expression. No ending slash at EOF
 ERROR_rule_definition:
   .all:
   - .ref: ERROR_rule_start
@@ -82,7 +82,7 @@ ERROR_rule_reference:
     - .err: Illegal character in rule quantifier
   - .all:
     - .rgx: (?=[!=\+\-\.]?(?:[a-zA-Z][a-zA-Z0-9]*(?:[\-_][a-zA-Z0-9]+)*|\-+|_+)(?=[^\w\-])\-)
-    - .err: Unprotected rule name with numeric quantifier please use <rule>#-# syntax!
+    - .err: Unprotected rule name with numeric quantifier. Please use <rule>#-# syntax!
   - .all:
     - +asr: -1
       .ref: rule_modifier

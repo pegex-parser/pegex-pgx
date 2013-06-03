@@ -5,15 +5,23 @@
 %include pegex-atoms
 
 
-grammar: meta-section rule-section (
-   doc-ending |
-   # We definitely have an error at this point; analyze it!
-   ERROR-rule-definition
-)
+grammar:
+  meta-section
+  rule-section (
+  | doc-ending
+  | ERROR-rule-definition
+  )
 
-meta-section: ( meta-definition | + | ERROR-meta-definition )*
+meta-section: (
+  | meta-definition
+  | +
+  | ERROR-meta-definition
+)*
 
-rule-section: ( rule-definition | + )*
+rule-section: (
+  | rule-definition
+  | +
+)*
 
 meta-definition: / <PERCENT> <meta-name> <BLANK>+ <meta-value> /
 
@@ -163,7 +171,7 @@ ERROR-rule-reference:
     `Illegal character in rule quantifier`
 |
     /(= <rule-modifier>? <rule-name> <DASH> )/
-    `Unprotected rule name with numeric quantifier; please use <rule>#-# syntax!`
+    `Unprotected rule name with numeric quantifier. Please use <rule>#-# syntax!`
 |
     !rule-modifier
     /(=
@@ -177,7 +185,7 @@ ERROR-rule-reference:
 # Errors - regular-expression
 ERROR-regular-expression:
     /(= <SLASH> ( [^ <SLASH> ]* ) <doc-ending> )/
-    `Runaway regular expression; no ending slash at EOF`
+    `Runaway regular expression. No ending slash at EOF`
 
 # Errors - bracketed-group
 ERROR-bracketed-group:
@@ -188,7 +196,7 @@ ERROR-bracketed-group:
     rule-group
     (
         =doc-ending
-        `Runaway rule group; no ending parens at EOF`
+        `Runaway rule group. No ending parens at EOF`
     |
         / (= - <RPAREN> <illegal-non-quantifier-char> ) /
         `Illegal character in group rule quantifier`
@@ -200,7 +208,7 @@ ERROR-error-message:
     `Multi-line error messages not allowed!`
 |
     /(= <GRAVE> [^ <GRAVE> ]* <doc-ending> )/
-    `Runaway error message; no ending grave at EOF`
+    `Runaway error message. No ending grave at EOF`
 
 # Errors - separation
 ERROR-separation:
