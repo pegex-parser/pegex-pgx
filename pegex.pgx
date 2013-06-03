@@ -11,9 +11,9 @@ grammar: meta-section rule-section (
    ERROR-rule-definition
 )
 
-meta-section: ( meta-definition | ~~ | ERROR-meta-definition )*
+meta-section: ( meta-definition | + | ERROR-meta-definition )*
 
-rule-section: ( rule-definition | ~~ )*
+rule-section: ( rule-definition | + )*
 
 meta-definition: / <PERCENT> <meta-name> <BLANK>+ <meta-value> /
 
@@ -25,7 +25,7 @@ rule-group: any-group
 
 any-group: / - <PIPE>? - / all-group ( / - <PIPE> - / all-group )*
 
-all-group: rule-part (~ rule-part)*
+all-group: rule-part (- rule-part)*
 
 rule-part: <rule-item>1-2 % / + ( <PERCENT>{1,2} ) + /
 
@@ -133,7 +133,7 @@ ERROR-rule-definition: ERROR-rule-start ERROR-rule-group ( ending | `Rule ending
 
 ERROR-rule-group: ERROR-any-group | ERROR-all-group
 
-ERROR-all-group: ERROR-rule-part+ % ~
+ERROR-all-group: ERROR-rule-part+ % -
 
 ERROR-any-group: <ERROR-all-group>2+ % / - <PIPE> - /
 

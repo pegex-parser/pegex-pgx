@@ -7,7 +7,7 @@ ERROR_all_group:
   +min: 1
   .ref: ERROR_rule_part
   .sep:
-    .rgx: (?:\s|\#.*(?:\n|\z))*
+    .ref: _
 ERROR_any_group:
   +min: '2'
   .ref: ERROR_all_group
@@ -93,12 +93,16 @@ ERROR_rule_start:
   .any:
   - .rgx: ((?:[a-zA-Z][a-zA-Z0-9]*(?:[\-_][a-zA-Z0-9]+)*|\-+|_+)(?=[^\w\-]))[\ \t]*:(?:\s|\#.*(?:\n|\z))*
   - .err: Rule header syntax error
+_:
+  .rgx: (?:\s|\#.*(?:\n|\z))*
+__:
+  .rgx: (?:\s|\#.*(?:\n|\z))+
 all_group:
   .all:
   - .ref: rule_part
   - +min: 0
     .all:
-    - .rgx: (?:\s|\#.*(?:\n|\z))*
+    - .ref: _
     - .ref: rule_part
 any_group:
   .all:
@@ -132,7 +136,7 @@ meta_section:
   +min: 0
   .any:
   - .ref: meta_definition
-  - .rgx: (?:\s|\#.*(?:\n|\z))+
+  - .ref: __
   - .ref: ERROR_meta_definition
 regular_expression:
   .rgx: /([^/]*)/
@@ -165,7 +169,7 @@ rule_section:
   +min: 0
   .any:
   - .ref: rule_definition
-  - .rgx: (?:\s|\#.*(?:\n|\z))+
+  - .ref: __
 rule_start:
   .rgx: ((?:[a-zA-Z][a-zA-Z0-9]*(?:[\-_][a-zA-Z0-9]+)*|\-+|_+)(?=[^\w\-]))[\ \t]*:(?:\s|\#.*(?:\n|\z))*
 whitespace_token:
