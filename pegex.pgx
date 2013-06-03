@@ -56,7 +56,7 @@ bracketed-group:
     / ~ <RPAREN> ( <rule-quantifier>? ) /
 
 whitespace-token:
-    / ( <TILDE>+ | <PLUS>+ | <DASH>+ ) /
+    / ( <TILDE>+ | (: <PLUS>+ | <DASH>+ ) (= <WS>+ | <EOS>) ) /
 
 error-message:
     / <GRAVE> ( [^ <GRAVE> <DOS> ]* ) <GRAVE> /
