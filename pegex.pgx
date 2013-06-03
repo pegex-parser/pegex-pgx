@@ -19,15 +19,15 @@ meta-definition: / <PERCENT> <meta-name> <BLANK>+ <meta-value> /
 
 rule-definition: rule-start rule-group ending
 
-rule-start: / ( <rule-name> ) <BLANK>* <COLON> ~ /
+rule-start: / ( <rule-name> ) <BLANK>* <COLON> - /
 
 rule-group: any-group
 
-any-group: / ~ <PIPE>? ~ / all-group ( / ~ <PIPE> ~ / all-group )*
+any-group: / - <PIPE>? - / all-group ( / - <PIPE> - / all-group )*
 
 all-group: rule-part (~ rule-part)*
 
-rule-part: <rule-item>1-2 % / ~~ ( <PERCENT>{1,2} ) ~~ /
+rule-part: <rule-item>1-2 % / + ( <PERCENT>{1,2} ) + /
 
 rule-item:
   | whitespace-token
@@ -51,9 +51,9 @@ regular-expression:
     / <SLASH> ( [^ <SLASH> ]* ) <SLASH> /
 
 bracketed-group:
-    / ( <group-modifier>? ) <LPAREN> ~ /
+    / ( <group-modifier>? ) <LPAREN> - /
     rule-group
-    / ~ <RPAREN> ( <rule-quantifier>? ) /
+    / - <RPAREN> ( <rule-quantifier>? ) /
 
 whitespace-token:
     / ( <TILDE>+ | (: <PLUS>+ | <DASH>+ ) (= <WS>+ | <EOS>) ) /
@@ -94,14 +94,16 @@ rule-name: /
 ending: /
   ~?
   (:
-    <BREAK> ~ <SEMI>? ~ |
-    <comment> ~ <SEMI>? ~ |
-    <SEMI> ~ |
+    <BREAK> - <SEMI>? - |
+    <comment> - <SEMI>? - |
+    <SEMI> - |
     <EOS>
   )
 /
 
 ws: / (: <WS> | <comment> ) /
+_:  / <ws>* /
+__: / <ws>+ /
 
 comment: / <HASH> <ANY>* (: <BREAK> | <EOS> ) /
 
@@ -109,7 +111,7 @@ comment: / <HASH> <ANY>* (: <BREAK> | <EOS> ) /
 # Pegex common error recognition and reporting:
 ###
 
-doc-ending: / ~ <EOS> /
+doc-ending: / - <EOS> /
 
 illegal-non-modifier-char: / [^
     <WORD> <LPAREN> <RPAREN> <LANGLE> <SLASH> <TILDE> <PIPE> <GRAVE> <WS>
@@ -133,11 +135,11 @@ ERROR-rule-group: ERROR-any-group | ERROR-all-group
 
 ERROR-all-group: ERROR-rule-part+ % ~
 
-ERROR-any-group: <ERROR-all-group>2+ % / ~ <PIPE> ~ /
+ERROR-any-group: <ERROR-all-group>2+ % / - <PIPE> - /
 
-ERROR-rule-part: <ERROR-rule-item>1-2 % / ~~ ( <PERCENT>{1,2} ) ~~ /
+ERROR-rule-part: <ERROR-rule-item>1-2 % / + ( <PERCENT>{1,2} ) + /
 
-ERROR-rule-start: / ( <rule-name> ) <BLANK>* <COLON> ~ / | `Rule header syntax error`
+ERROR-rule-start: / ( <rule-name> ) <BLANK>* <COLON> - / | `Rule header syntax error`
 
 ERROR-rule-item:
     rule-item |
@@ -182,13 +184,13 @@ ERROR-bracketed-group:
     /(! <group-modifier>) (= <illegal-non-modifier-char> <LPAREN> )/
     `Illegal group rule modifier (can only use .)`
 |
-    / ( <group-modifier>? ) <LPAREN> ~ /
+    / ( <group-modifier>? ) <LPAREN> - /
     rule-group
     (
         =doc-ending
         `Runaway rule group; no ending parens at EOF`
     |
-        / (= ~ <RPAREN> <illegal-non-quantifier-char> ) /
+        / (= - <RPAREN> <illegal-non-quantifier-char> ) /
         `Illegal character in group rule quantifier`
     )
 
@@ -202,8 +204,8 @@ ERROR-error-message:
 
 # Errors - separation
 ERROR-separation:
-    /(= ~ <PERCENT>{3} )/
+    /(= - <PERCENT>{3} )/
     `Leading separator form (BOK) no longer supported`
 |
-    /(= ~ <PERCENT>{1,2} [^ <WS> ] )/
+    /(= - <PERCENT>{1,2} [^ <WS> ] )/
     `Illegal characters in separator indicator`
