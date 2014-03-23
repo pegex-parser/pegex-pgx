@@ -101,6 +101,7 @@ all_group:
     - .ref: rule_part
 any_group:
   .all:
+  - .rgx: (?:\s|\#.*(?:\n|\z))*\|?(?:\s|\#.*(?:\n|\z))*
   - .ref: all_group
   - +min: 0
     .all:
