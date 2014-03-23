@@ -24,7 +24,7 @@ rule-group: any-group
 
 any-group: '|' all-group ( / - '|' - / all-group )*
 
-all-group: rule-part (- rule-part)*
+all-group: rule-part (/-/ rule-part)*
 
 rule-part: (rule-item)1-2 % / + ( '%'{1,2} ) + /
 
@@ -62,7 +62,7 @@ error-message:
 
 rule-modifier: / [ BANG EQUAL PLUS DASH DOT ] /
 
-group-modifier: DOT
+group-modifier: '.'
 
 rule-quantifier:
     / (:
@@ -71,7 +71,7 @@ rule-quantifier:
     ) /
 
 meta-name:
-    / ( grammar | extends | include | version ) /
+    / ( 'grammar' | 'extends' | 'include' | 'version' ) /
 
 meta-value:
     /
@@ -87,7 +87,7 @@ ending: / -? (: BREAK - SEMI? - | comment - SEMI? - | SEMI - | EOS ) /
 
 ws: / (: WS | comment ) /
 
-comment: / HASH ANY* (: BREAK | EOS ) /
+comment: / '#' ANY* (: BREAK | EOS ) /
 
 ###
 # Pegex common error recognition and reporting:
@@ -115,7 +115,7 @@ ERROR-rule-definition: ERROR-rule-start ERROR-rule-group ( ending | `Rule ending
 
 ERROR-rule-group: ERROR-any-group | ERROR-all-group
 
-ERROR-all-group: ERROR-rule-part+ % -
+ERROR-all-group: ERROR-rule-part+ % /-/
 
 ERROR-any-group: (ERROR-all-group)2+ % / - PIPE - /
 
