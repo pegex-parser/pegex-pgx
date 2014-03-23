@@ -22,7 +22,7 @@ rule-start: / ( rule-name ) BLANK* ':' -/
 
 rule-group: any-group
 
-any-group: /- '|' -/ all-group ( /- '|' -/ all-group )*
+any-group: /- '|'? -/ all-group ( /- '|' -/ all-group )*
 
 all-group: rule-part (- rule-part)*
 

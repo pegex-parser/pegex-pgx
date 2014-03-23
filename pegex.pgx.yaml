@@ -1,12 +1,13 @@
 ---
 +grammar: pegex
++include: pegex-atoms
 +toprule: grammar
 +version: 0.2.0
 ERROR_all_group:
   +min: 1
   .ref: ERROR_rule_part
   .sep:
-    .rgx: (?:\s|\#.*(?:\n|\z))*
+    .ref: _
 ERROR_any_group:
   +min: '2'
   .ref: ERROR_all_group
@@ -24,7 +25,7 @@ ERROR_bracketed_group:
       - .all:
         - +asr: 1
           .ref: doc_ending
-        - .err: Runaway rule group no ending parens at EOF
+        - .err: Runaway rule group; no ending parens at EOF
       - .all:
         - .rgx: (?=(?:\s|\#.*(?:\n|\z))*\)[^\w\(\)</\~\|`\s\*\+\?!=\+\-\.:;])
         - .err: Illegal character in group rule quantifier
@@ -35,7 +36,7 @@ ERROR_error_message:
     - .err: Multi-line error messages not allowed!
   - .all:
     - .rgx: (?=`[^`]*(?:\s|\#.*(?:\n|\z))*\z)
-    - .err: Runaway error message no ending grave at EOF
+    - .err: Runaway error message; no ending grave at EOF
 ERROR_meta_definition:
   .all:
   - .rgx: (?=%\w+)
@@ -43,7 +44,7 @@ ERROR_meta_definition:
 ERROR_regular_expression:
   .all:
   - .rgx: (?=/([^/]*)(?:\s|\#.*(?:\n|\z))*\z)
-  - .err: Runaway regular expression no ending slash at EOF
+  - .err: Runaway regular expression; no ending slash at EOF
 ERROR_rule_definition:
   .all:
   - .ref: ERROR_rule_start
@@ -71,21 +72,21 @@ ERROR_rule_part:
 ERROR_rule_reference:
   .any:
   - .all:
-    - .rgx: (?=[!=\+\-\.]?<[a-zA-Z]\w*\b(?!>))
+    - .rgx: (?=[!=\+\-\.]?<[a-zA-Z]\w*\b(?!\>))
     - .err: Missing > in rule reference
   - .all:
-    - .rgx: (?=[!=\+\-\.]?[a-zA-Z]\w*\b>)
+    - .rgx: (?=[!=\+\-\.]?[a-zA-Z]\w*\b\>)
     - .err: Missing < in rule reference
   - .all:
-    - .rgx: (?=[!=\+\-\.]?(?:[a-zA-Z]\w*\b|<[a-zA-Z]\w*\b>)[^\w\(\)</\~\|`\s\*\+\?!=\+\-\.:;])
+    - .rgx: (?=[!=\+\-\.]?(?:[a-zA-Z]\w*\b|<[a-zA-Z]\w*\b\>)[^\w\(\)</\~\|`\s\*\+\?!=\+\-\.:;])
     - .err: Illegal character in rule quantifier
   - .all:
     - .rgx: (?=[!=\+\-\.]?[a-zA-Z]\w*\b\-)
-    - .err: Unprotected rule name with numeric quantifier please use <rule>#-# syntax!
+    - .err: Unprotected rule name with numeric quantifier; please use <rule>#-# syntax!
   - .all:
     - +asr: -1
       .ref: rule_modifier
-    - .rgx: (?=[^\w\(\)</\~\|`\s](?:[a-zA-Z]\w*\b|<[a-zA-Z]\w*\b>)(?:[\*\+\?]|[0-9]+(?:\-[0-9]+|\+)?)?(?![\
+    - .rgx: (?=[^\w\(\)</\~\|`\s](?:[a-zA-Z]\w*\b|<[a-zA-Z]\w*\b\>)(?:[\*\+\?]|[0-9]+(?:\-[0-9]+|\+)?)?(?![\
         \t]*:))
     - .err: Illegal rule modifier (must be [=!.-+]?)
 ERROR_rule_start:
@@ -97,7 +98,7 @@ all_group:
   - .ref: rule_part
   - +min: 0
     .all:
-    - .rgx: (?:\s|\#.*(?:\n|\z))*
+    - .ref: _
     - .ref: rule_part
 any_group:
   .all:
@@ -131,7 +132,7 @@ meta_section:
   +min: 0
   .any:
   - .ref: meta_definition
-  - .rgx: (?:\s|\#.*(?:\n|\z))+
+  - .ref: __
   - .ref: ERROR_meta_definition
 regular_expression:
   .rgx: /([^/]*)/
@@ -158,13 +159,13 @@ rule_part:
   .sep:
     .rgx: (?:\s|\#.*(?:\n|\z))+(%{1,2})(?:\s|\#.*(?:\n|\z))+
 rule_reference:
-  .rgx: ([!=\+\-\.]?)(?:([a-zA-Z]\w*\b)|(?:<([a-zA-Z]\w*\b)>))((?:[\*\+\?]|[0-9]+(?:\-[0-9]+|\+)?)?)(?![\
+  .rgx: ([!=\+\-\.]?)(?:([a-zA-Z]\w*\b)|(?:<([a-zA-Z]\w*\b)\>))((?:[\*\+\?]|[0-9]+(?:\-[0-9]+|\+)?)?)(?![\
     \t]*:)
 rule_section:
   +min: 0
   .any:
   - .ref: rule_definition
-  - .rgx: (?:\s|\#.*(?:\n|\z))+
+  - .ref: __
 rule_start:
   .rgx: ([a-zA-Z]\w*\b)[\ \t]*:(?:\s|\#.*(?:\n|\z))*
 whitespace_token:
