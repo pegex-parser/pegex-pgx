@@ -339,8 +339,51 @@
          }
       ]
    },
+   "quoted_regex" : {
+      ".rgx" : "'([^']*)'"
+   },
+   "regex_raw" : {
+      ".rgx" : "([^\\s/'<]+)"
+   },
+   "regex_rule_reference" : {
+      ".rgx" : "(?:(?:\\s|\\#.*(?:\\n|\\z))+((?:[a-zA-Z][a-zA-Z0-9]*(?:[\\-_][a-zA-Z0-9]+)*|\\-+|_+)(?=[^\\w\\-]))|(?:<((?:[a-zA-Z][a-zA-Z0-9]*(?:[\\-_][a-zA-Z0-9]+)*|\\-+|_+)(?=[^\\w\\-]))\\>))(?![\\ \\t]*:)"
+   },
    "regular_expression" : {
-      ".rgx" : "/([^/]*)/"
+      ".all" : [
+         {
+            ".rgx" : "/"
+         },
+         {
+            "+max" : 1,
+            ".ref" : "whitespace_must_start"
+         },
+         {
+            "+min" : 0,
+            ".any" : [
+               {
+                  ".ref" : "whitespace_must"
+               },
+               {
+                  ".ref" : "whitespace_maybe"
+               },
+               {
+                  ".ref" : "quoted_regex"
+               },
+               {
+                  ".ref" : "regex_rule_reference"
+               },
+               {
+                  ".ref" : "__"
+               },
+               {
+                  ".ref" : "regex_raw"
+               }
+            ]
+         },
+         {
+            ".rgx" : "/"
+         }
+      ]
    },
    "rule_definition" : {
       ".all" : [
@@ -362,6 +405,9 @@
       ".any" : [
          {
             ".ref" : "rule_reference"
+         },
+         {
+            ".ref" : "quoted_regex"
          },
          {
             ".ref" : "regular_expression"
@@ -405,7 +451,16 @@
    "rule_start" : {
       ".rgx" : "((?:[a-zA-Z][a-zA-Z0-9]*(?:[\\-_][a-zA-Z0-9]+)*|\\-+|_+)(?=[^\\w\\-]))[\\ \\t]*:(?:\\s|\\#.*(?:\\n|\\z))*"
    },
+   "whitespace_maybe" : {
+      ".rgx" : "(?:\\s|\\#.*(?:\\n|\\z))*\\-(?=[\\ /])"
+   },
+   "whitespace_must" : {
+      ".rgx" : "(?:\\s|\\#.*(?:\\n|\\z))+(?:\\+|\\-\\-)(?=[\\ /])"
+   },
+   "whitespace_must_start" : {
+      ".rgx" : "\\+(?=[\\ /])"
+   },
    "whitespace_token" : {
-      ".rgx" : "(\\~+)"
+      ".rgx" : "((?:\\+|\\-|\\-\\-|\\~|\\~\\~))(?:\\s|\\#.*(?:\\n|\\z))+"
    }
 }

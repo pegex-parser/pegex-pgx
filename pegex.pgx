@@ -29,10 +29,11 @@ all-group: rule-part (- rule-part)*
 rule-part: (rule-item)1-2 % /+ ( '%'{1,2} ) +/
 
 rule-item:
+  | whitespace-token
   | rule-reference
+  | quoted-regex
   | regular-expression
   | bracketed-group
-  | whitespace-token
   | error-message
 
 rule-reference:
@@ -44,10 +45,40 @@ rule-reference:
       )
     ( rule-quantifier? )    # [?*+] 2+ 2-3
     (! BLANK* ':' )         # Avoid parsing 'foo:'
-  /                         # as a rule reference.
+  /                        # as a rule reference.
+
+quoted-regex:
+  / TICK ( [^ TICK ]* ) TICK /
 
 regular-expression:
-    / '/' ( [^ '/' ]* ) '/' /
+  '/'
+  whitespace-must-start?
+  (
+  | whitespace-must
+  | whitespace-maybe
+  | quoted-regex
+  | regex-rule-reference
+  | +
+  | regex-raw
+  )*
+  '/'
+
+whitespace-must-start: / PLUS (= [ SPACE SLASH ]) /
+
+whitespace-must: /+ (: PLUS | DASH DASH )  (= [ SPACE SLASH ]) /
+
+whitespace-maybe: /- DASH (= [ SPACE SLASH ]) /
+
+regex-rule-reference:
+  /
+    (:
+      + ( rule-name ) |
+      (: '<' ( rule-name ) '>' )
+    )
+    (! BLANK* ':' )
+  /
+
+regex-raw: / ([^ WS SLASH TICK LANGLE ]+) /
 
 bracketed-group:
     / ( group-modifier? ) '(' -/
@@ -55,7 +86,7 @@ bracketed-group:
     /- ')' ( rule-quantifier? ) /
 
 whitespace-token:
-    / ( '~'+ ) /
+    / ( (: PLUS | DASH | DASH DASH | TILDE | TILDE TILDE ) ) (= + )/
 
 error-message:
     / '`' ( [^ '`' DOS ]* ) '`' /
@@ -206,3 +237,5 @@ ERROR-separation:
 |
     /(= - PERCENT{1,2} [^ WS ] )/
     `Illegal characters in separator indicator`
+
+# vim: set lisp:
