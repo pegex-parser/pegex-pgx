@@ -81,9 +81,24 @@ meta-value:
         ending
     /
 
-rule-name: / ALPHA WORD* \b /
+rule_name: /
+  (:
+    ALPHA ALNUM* (:[ DASH UNDER ] ALNUM+)* |
+    DASH+ |
+    UNDER+
+  )
+  (= [^ WORD DASH ])
+/
 
-ending: / <->? (: BREAK - SEMI? - | comment - SEMI? - | SEMI - | EOS ) /
+ending: /
+  ~?
+  (:
+    BREAK - SEMI? - |
+    comment - SEMI? - |
+    SEMI - |
+    EOS
+  )
+/
 
 ws: / (: WS | comment ) /
 
