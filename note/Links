@@ -21,6 +21,10 @@ Web Links
 - https://github.com/jgm/peg-markdown — Markdown PEG
 - http://users.digitalkingdom.org/~rlpowell/hobbies/lojban/grammar/ — Lojban PEG
 - http://www.lojban.org/tiki/PEG
+- http://github.com/leafo/moonscript/blob/master/moonscript/parse.lua
+- https://github.com/tolmasky/language
+- https://developer.mozilla.org/en-US/docs/SpiderMonkey/Parser_API
+- https://github.com/Constellation/escodegen
 
 
 # PEG Frameworks / Implementations

@@ -1,4 +1,5 @@
 AsciiTable
+Bash
 BNF
 C
 C#
@@ -13,8 +14,11 @@ Dart
 Diff
 EBNF
 EcmaScript6
+ERB
 GetOpt
 GoLang
+HAML
+Haskell
 HTML
 HTTP
 INI
@@ -31,8 +35,10 @@ LiveScript
 LLVM
 LojBan          http://subvert-the-dominant-paradigm.net/~jbominji/code/lojban_grammar.peg
 Markdown        https://github.com/jgm/peg-markdown
+MediaWiki
 MIME
 Moe
+Mustache
 NQP
 OWL
 PDF
@@ -50,6 +56,7 @@ rdoc
 Regex
 Ruby
 Sass
+Socialtext
 SPARQL
 SQL
 Tcl
@@ -62,3 +69,4 @@ Vroom
 XML
 XPath
 YAML
+YPath
