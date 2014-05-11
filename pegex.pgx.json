@@ -4,25 +4,49 @@
    "+toprule" : "grammar",
    "+version" : "0.2.0",
    "ERROR_all_group" : {
-      "+min" : 1,
-      ".ref" : "ERROR_rule_part",
-      ".sep" : {
-         ".ref" : "_"
-      }
+      ".all" : [
+         {
+            ".ref" : "ERROR_rule_part"
+         },
+         {
+            "+min" : 0,
+            "-flat" : 1,
+            ".all" : [
+               {
+                  ".ref" : "_"
+               },
+               {
+                  ".ref" : "ERROR_rule_part"
+               }
+            ]
+         }
+      ]
    },
    "ERROR_any_group" : {
-      "+min" : "2",
-      ".ref" : "ERROR_all_group",
-      ".sep" : {
-         ".rgx" : "(?:\\s|\\#.*(?:\\n|\\z))*\\|(?:\\s|\\#.*(?:\\n|\\z))*"
-      }
+      ".all" : [
+         {
+            ".ref" : "ERROR_all_group"
+         },
+         {
+            "+min" : 1,
+            "-flat" : 1,
+            ".all" : [
+               {
+                  ".rgx" : "(?:\\s|\\#.*(?:\\n|\\z))*\\|(?:\\s|\\#.*(?:\\n|\\z))*"
+               },
+               {
+                  ".ref" : "ERROR_all_group"
+               }
+            ]
+         }
+      ]
    },
    "ERROR_bracketed_group" : {
       ".any" : [
          {
             ".all" : [
                {
-                  ".rgx" : "(?!\\.)(?=[^\\w\\(\\)</\\~\\|`\\s]\\()"
+                  ".rgx" : "(?![\\-\\.])(?=[^\\w\\(\\)</\\~\\|`\\s]\\()"
                },
                {
                   ".err" : "Illegal group rule modifier (can only use .)"
@@ -32,7 +56,7 @@
          {
             ".all" : [
                {
-                  ".rgx" : "(\\.?)\\((?:\\s|\\#.*(?:\\n|\\z))*"
+                  ".rgx" : "([\\-\\.]?)\\((?:\\s|\\#.*(?:\\n|\\z))*"
                },
                {
                   ".ref" : "rule_group"
@@ -160,12 +184,24 @@
       ]
    },
    "ERROR_rule_part" : {
-      "+max" : "2",
-      "+min" : "1",
-      ".ref" : "ERROR_rule_item",
-      ".sep" : {
-         ".rgx" : "(?:\\s|\\#.*(?:\\n|\\z))+(%{1,2})(?:\\s|\\#.*(?:\\n|\\z))+"
-      }
+      ".all" : [
+         {
+            ".ref" : "ERROR_rule_item"
+         },
+         {
+            "+max" : 1,
+            "+min" : 0,
+            "-flat" : 1,
+            ".all" : [
+               {
+                  ".rgx" : "(?:\\s|\\#.*(?:\\n|\\z))+(%{1,2})(?:\\s|\\#.*(?:\\n|\\z))+"
+               },
+               {
+                  ".ref" : "ERROR_rule_item"
+               }
+            ]
+         }
+      ]
    },
    "ERROR_rule_reference" : {
       ".any" : [
@@ -283,7 +319,7 @@
    "bracketed_group" : {
       ".all" : [
          {
-            ".rgx" : "(\\.?)\\((?:\\s|\\#.*(?:\\n|\\z))*"
+            ".rgx" : "([\\-\\.]?)\\((?:\\s|\\#.*(?:\\n|\\z))*"
          },
          {
             ".ref" : "rule_group"
@@ -404,6 +440,12 @@
    "rule_item" : {
       ".any" : [
          {
+            ".ref" : "bracketed_group"
+         },
+         {
+            ".ref" : "whitespace_token"
+         },
+         {
             ".ref" : "rule_reference"
          },
          {
@@ -411,12 +453,6 @@
          },
          {
             ".ref" : "regular_expression"
-         },
-         {
-            ".ref" : "bracketed_group"
-         },
-         {
-            ".ref" : "whitespace_token"
          },
          {
             ".ref" : "error_message"
@@ -427,12 +463,24 @@
       ".rgx" : "[!=\\+\\-\\.]"
    },
    "rule_part" : {
-      "+max" : "2",
-      "+min" : "1",
-      ".ref" : "rule_item",
-      ".sep" : {
-         ".rgx" : "(?:\\s|\\#.*(?:\\n|\\z))+(%{1,2})(?:\\s|\\#.*(?:\\n|\\z))+"
-      }
+      ".all" : [
+         {
+            ".ref" : "rule_item"
+         },
+         {
+            "+max" : 1,
+            "+min" : 0,
+            "-flat" : 1,
+            ".all" : [
+               {
+                  ".rgx" : "(?:\\s|\\#.*(?:\\n|\\z))+(%{1,2})(?:\\s|\\#.*(?:\\n|\\z))+"
+               },
+               {
+                  ".ref" : "rule_item"
+               }
+            ]
+         }
+      ]
    },
    "rule_reference" : {
       ".rgx" : "([!=\\+\\-\\.]?)(?:((?:[a-zA-Z][a-zA-Z0-9]*(?:[\\-_][a-zA-Z0-9]+)*|\\-+|_+)(?=[^\\w\\-]))|(?:<((?:[a-zA-Z][a-zA-Z0-9]*(?:[\\-_][a-zA-Z0-9]+)*|\\-+|_+)(?=[^\\w\\-]))\\>))((?:[\\*\\+\\?]|[0-9]+(?:\\-[0-9]+|\\+)?)?)(?![\\ \\t]*:)"
@@ -461,6 +509,6 @@
       ".rgx" : "\\+(?=[\\ /])"
    },
    "whitespace_token" : {
-      ".rgx" : "((?:\\+|\\-|\\-\\-|\\~|\\~\\~))(?:\\s|\\#.*(?:\\n|\\z))+"
+      ".rgx" : "((?:\\+|\\-|\\-\\-|\\~|\\~\\~))(?=(?:\\s|\\#.*(?:\\n|\\z))+)"
    }
 }
